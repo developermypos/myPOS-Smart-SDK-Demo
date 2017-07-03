@@ -1,0 +1,3 @@
+[submodule "smartsdk"]
+	path = smartsdk
+	url = https://github.com/developermypos/myPOS-Smart-SDK.git
