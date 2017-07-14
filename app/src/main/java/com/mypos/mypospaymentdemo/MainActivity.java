@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.mypos.smartsdk.Currency;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSPayment;
 import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
+import com.mypos.smartsdk.ReceiptPrintMode;
 import com.mypos.smartsdk.TransactionProcessingResult;
 import com.mypos.smartsdk.print.PrinterCommand;
 
@@ -22,6 +25,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int PAYMENT_REQUEST_CODE = 1;
     private static final int REFUND_REQUEST_CODE  = 2;
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Print all the returned data
+        Log.d(TAG, "Response: " + bundleAsString(data.getExtras()));
+
         // Populate the TextViews with data from the response
 
         TextView tmpTextView;
@@ -102,12 +110,46 @@ public class MainActivity extends AppCompatActivity {
 
         tmpTextView = (TextView) findViewById(R.id.aid);
         tmpTextView.setText("AID: " + data.getStringExtra("aid"));
+
+        tmpTextView = (TextView) findViewById(R.id.tvr);
+        tmpTextView.setText("TVR: " + data.getStringExtra("TVR"));
+
+        tmpTextView = (TextView) findViewById(R.id.tsi);
+        tmpTextView.setText("TSI: " + data.getStringExtra("TSI"));
+    }
+
+    /**
+     * Prints the contents of a {@link Bundle} for debug purposes
+     */
+    private String bundleAsString(Bundle data) {
+        return bundleAsString(data, false);
+    }
+
+    private String bundleAsString(Bundle data, boolean indent) {
+        String retString = "";
+        if (data != null) {
+            for (String s : data.keySet()) {
+                Object extra = data.get(s);
+                if (extra instanceof Bundle) {
+                    retString += "\n\tBundle \"" + s + "\":\n" + bundleAsString((Bundle) extra, true);
+                } else {
+                    retString += (String.format("%s%s => %s\n", indent ? "\t\t" : "\t", s, extra));
+                }
+            }
+        }
+        return retString;
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_payment:
-                startPayment();
+                startPayment(false, false);
+                break;
+            case R.id.start_payment_no_confirmation_screen:
+                startPayment(true, false);
+                break;
+            case R.id.start_payment_no_receipt:
+                startPayment(true, true);
                 break;
             case R.id.start_refund:
                 startRefund();
@@ -164,15 +206,18 @@ public class MainActivity extends AppCompatActivity {
         sendBroadcast(intent);
     }
 
-    private void startPayment() {
+    private void startPayment(boolean skipConfirmationScreen, boolean skipReceipt) {
         // Build the payment
         MyPOSPayment payment = MyPOSPayment.builder()
                 .productAmount(13.37)
+                .currency(Currency.EUR)
                 .foreignTransactionId(UUID.randomUUID().toString())
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE);
+        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
+                skipConfirmationScreen,
+                skipReceipt ? ReceiptPrintMode.NO_RECEIPT : ReceiptPrintMode.AUTOMATICALLY);
 
     }
 
@@ -183,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
         // Build the refund request
         MyPOSRefund refund = MyPOSRefund.builder()
                 .refundAmount(1.23)
+                .currency(Currency.EUR)
                 .foreignTransactionId(UUID.randomUUID().toString())
                 .build();
 

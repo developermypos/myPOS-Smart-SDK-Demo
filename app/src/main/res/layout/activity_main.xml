@@ -38,6 +38,33 @@
             android:text="@string/start_refund"/>
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+
+        <Button
+            android:id="@+id/start_payment_no_confirmation_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_payment_no_confirmation_screen"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/start_payment_no_receipt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_payment_no_receipt"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -172,6 +199,23 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:text="AID: - "/>
+
+            <TextView
+                android:id="@+id/tvr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:text="TVR: - "/>
+            <TextView
+                android:id="@+id/tsi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:text="TSI: - "/>
 
 
         </LinearLayout>
