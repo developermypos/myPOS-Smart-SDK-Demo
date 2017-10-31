@@ -3,6 +3,8 @@ package com.mypos.mypospaymentdemo;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,9 +16,11 @@ import com.google.gson.Gson;
 import com.mypos.smartsdk.Currency;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSPayment;
+import com.mypos.smartsdk.MyPOSPaymentRequest;
 import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReceiptPrintMode;
+import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
 import com.mypos.smartsdk.print.PrinterCommand;
 
@@ -30,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PAYMENT_REQUEST_CODE = 1;
     private static final int REFUND_REQUEST_CODE  = 2;
+    private static final int PAYMENT_REQUEST_REQUEST_CODE = 3;
+
+    private static final int SAM_DETECT_REQUEST_CODE = 10001;
+    private static final int SAM_INIT_REQUEST_CODE = 10002;
+    private static final int SAM_COMMAND_REQUEST_CODE = 10003;
+    private static final int SAM_CLOSE_REQUEST_CODE = 10004;
 
     PrinterResultBroadcastReceiver broadcastReceiver;
 
@@ -50,11 +60,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode >= SAM_DETECT_REQUEST_CODE && requestCode <= SAM_CLOSE_REQUEST_CODE) {
+            handleSAMResult(requestCode, resultCode, data);
+            return;
+        }
+
         // Distinguish between transaction types
         if (requestCode == PAYMENT_REQUEST_CODE) {
             Toast.makeText(this, "Payment operation completed", Toast.LENGTH_SHORT).show();
         } else if (requestCode == REFUND_REQUEST_CODE) {
             Toast.makeText(this, "Refund operation completed", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == PAYMENT_REQUEST_REQUEST_CODE) {
+            Toast.makeText(this, "Payment request operation completed", Toast.LENGTH_SHORT).show();
         }
 
         // The user cancelled the transaction at some point
@@ -118,6 +135,37 @@ public class MainActivity extends AppCompatActivity {
         tmpTextView.setText("TSI: " + data.getStringExtra("TSI"));
     }
 
+    void handleSAMResult(int requestCode, int resultCode, Intent data) {
+        // Distinguish between command types
+        if (requestCode == SAM_DETECT_REQUEST_CODE) {
+            boolean b = data.getBooleanExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE, false);
+            if (b) {
+                Toast.makeText(this, "SAM card detected in slot 1. Initializing", Toast.LENGTH_SHORT).show();
+                initSAMCard();
+            } else {
+                Toast.makeText(this, "No SAM card detected in slot 1", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == SAM_INIT_REQUEST_CODE) {
+            byte[] resp = data.getByteArrayExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE);
+            if (resp != null) {
+                Toast.makeText(this, "Initializing SAM successful. Sending command", Toast.LENGTH_SHORT).show();
+                sendSAMCommand();
+            } else {
+                Toast.makeText(this, "Initializing SAM failed.", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == SAM_COMMAND_REQUEST_CODE) {
+            byte[] resp = data.getByteArrayExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE);
+            if (resp != null) {
+                Toast.makeText(this, "Response to SAM command received. Closing SAM", Toast.LENGTH_SHORT).show();
+                closeSAMmodule();
+            } else {
+                Toast.makeText(this, "No response received from SAM", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == SAM_CLOSE_REQUEST_CODE) {
+            Toast.makeText(this, "SAM module closed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * Prints the contents of a {@link Bundle} for debug purposes
      */
@@ -160,6 +208,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.test_reprint:
                 reprintLastReceipt();
                 break;
+            case R.id.test_paymentRequest:
+                startPaymentRequest();
+                break;
+            case R.id.test_SAM:
+                startSAMTest();
+                break;
         }
     }
 
@@ -191,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
         commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Double width\n", true, false));
         commands.add(new PrinterCommand(PrinterCommand.CommandType.FOOTER));
 
+        // Add image to be sent
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sample);
+        commands.add(new PrinterCommand(PrinterCommand.CommandType.IMAGE, bitmap));
 
         // Serialize the command list
         Gson gson = new Gson();
@@ -236,5 +293,41 @@ public class MainActivity extends AppCompatActivity {
         MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE);
 
     }
-}
 
+    /**
+     * Starts a payment request transaction
+     */
+    private void startPaymentRequest() {
+        // Build the payment request
+        MyPOSPaymentRequest paymentRequest = MyPOSPaymentRequest.builder()
+                .productAmount(3.55)
+                .currency(Currency.EUR)
+                .expiryDays(60)
+                .recipientName("John Doe")
+                .GSM("0899070087")
+                .eMail("john.doe@email.arpa")
+                .reason("System test")
+                .build();
+
+        // Start the transaction
+        MyPOSAPI.createPaymentRequest(MainActivity.this, paymentRequest, PAYMENT_REQUEST_REQUEST_CODE);
+    }
+
+    /**
+     * Does a SAM module operation
+     */
+    private void startSAMTest() {
+        SAMCard.detect(this, SAM_DETECT_REQUEST_CODE, 1);
+    }
+    private void initSAMCard() {
+        SAMCard.open(this, SAM_INIT_REQUEST_CODE, 1);
+    }
+    private void sendSAMCommand() {
+        // SELECT command for file 0x3F00 (GSM card master file)
+        byte[] cmd = new byte[] {(byte)0x00,(byte)0xA4,(byte)0x00,(byte)0x00,(byte)0x02, (byte) 0x3f, (byte) 0x00};
+        SAMCard.isoCommand(this, SAM_COMMAND_REQUEST_CODE, 1, cmd);
+    }
+    private void closeSAMmodule() {
+        SAMCard.close(this, SAM_CLOSE_REQUEST_CODE, 1);
+    }
+}

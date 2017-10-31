@@ -88,6 +88,29 @@
             android:text="@string/reprint"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/test_paymentRequest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/test_paymentRequest" />
+
+        <Button
+            android:id="@+id/test_SAM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/test_SAMModule" />
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"

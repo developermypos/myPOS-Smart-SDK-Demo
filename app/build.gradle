@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def versionNumber = 19
+def versionString = "0.0.7"
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -7,8 +10,8 @@ android {
         applicationId "com.mypos.mypospaymentdemo"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode versionNumber
+        version versionString
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
