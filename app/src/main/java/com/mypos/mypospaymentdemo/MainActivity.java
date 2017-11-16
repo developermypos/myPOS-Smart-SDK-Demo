@@ -1,6 +1,7 @@
 package com.mypos.mypospaymentdemo;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -36,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REFUND_REQUEST_CODE  = 2;
     private static final int PAYMENT_REQUEST_REQUEST_CODE = 3;
 
-    private static final int SAM_DETECT_REQUEST_CODE = 10001;
-    private static final int SAM_INIT_REQUEST_CODE = 10002;
-    private static final int SAM_COMMAND_REQUEST_CODE = 10003;
-    private static final int SAM_CLOSE_REQUEST_CODE = 10004;
-
     PrinterResultBroadcastReceiver broadcastReceiver;
 
     @Override
@@ -59,11 +55,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode >= SAM_DETECT_REQUEST_CODE && requestCode <= SAM_CLOSE_REQUEST_CODE) {
-            handleSAMResult(requestCode, resultCode, data);
-            return;
-        }
 
         // Distinguish between transaction types
         if (requestCode == PAYMENT_REQUEST_CODE) {
@@ -133,37 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
         tmpTextView = (TextView) findViewById(R.id.tsi);
         tmpTextView.setText("TSI: " + data.getStringExtra("TSI"));
-    }
-
-    void handleSAMResult(int requestCode, int resultCode, Intent data) {
-        // Distinguish between command types
-        if (requestCode == SAM_DETECT_REQUEST_CODE) {
-            boolean b = data.getBooleanExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE, false);
-            if (b) {
-                Toast.makeText(this, "SAM card detected in slot 1. Initializing", Toast.LENGTH_SHORT).show();
-                initSAMCard();
-            } else {
-                Toast.makeText(this, "No SAM card detected in slot 1", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == SAM_INIT_REQUEST_CODE) {
-            byte[] resp = data.getByteArrayExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE);
-            if (resp != null) {
-                Toast.makeText(this, "Initializing SAM successful. Sending command", Toast.LENGTH_SHORT).show();
-                sendSAMCommand();
-            } else {
-                Toast.makeText(this, "Initializing SAM failed.", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == SAM_COMMAND_REQUEST_CODE) {
-            byte[] resp = data.getByteArrayExtra(MyPOSUtil.INTENT_SAM_CARD_RESPONSE);
-            if (resp != null) {
-                Toast.makeText(this, "Response to SAM command received. Closing SAM", Toast.LENGTH_SHORT).show();
-                closeSAMmodule();
-            } else {
-                Toast.makeText(this, "No response received from SAM", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == SAM_CLOSE_REQUEST_CODE) {
-            Toast.makeText(this, "SAM module closed", Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**
@@ -316,18 +276,55 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Does a SAM module operation
      */
+    //Build SAM module operation
+    private static final int SAM_SLOT_1 = 1;
+    private static final int SAM_SLOT_2 = 2;
+
     private void startSAMTest() {
-        SAMCard.detect(this, SAM_DETECT_REQUEST_CODE, 1);
+        final Context context = this;
+        Thread r = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    int slotNumber = SAM_SLOT_1;
+                    int timeoutMs = 1000;
+                    boolean hasCard;
+
+                    byte[] resp;
+                    byte[] cmd = new byte[] {(byte)0x00,(byte)0xA4,(byte)0x00,(byte)0x00,(byte)0x02, (byte) 0x3f, (byte) 0x00}; // SELECT command for file 0x3F00 (GSM card master file)
+
+                    hasCard = SAMCard.detect(context, slotNumber, timeoutMs);
+                    if (!hasCard) {
+                        showToast("No SAM card detected in slot " + slotNumber);
+                        return;
+                    }
+                    showToast("SAM card detected in slot " + slotNumber + ". Initializing");
+
+                    resp = SAMCard.open(context, slotNumber, timeoutMs);
+                    showToast("Initializing SAM successful. Sending command");
+
+                    resp = SAMCard.isoCommand(context, slotNumber, timeoutMs, cmd);
+                    showToast("Response to SAM command received. Closing SAM");
+
+                    SAMCard.close(context, slotNumber, timeoutMs);
+                    showToast("SAM module closed");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showToast(e.getMessage());
+                }
+            }
+        });
+        r.start();
     }
-    private void initSAMCard() {
-        SAMCard.open(this, SAM_INIT_REQUEST_CODE, 1);
+
+    public void showToast(final String toast)
+    {
+        runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-    private void sendSAMCommand() {
-        // SELECT command for file 0x3F00 (GSM card master file)
-        byte[] cmd = new byte[] {(byte)0x00,(byte)0xA4,(byte)0x00,(byte)0x00,(byte)0x02, (byte) 0x3f, (byte) 0x00};
-        SAMCard.isoCommand(this, SAM_COMMAND_REQUEST_CODE, 1, cmd);
-    }
-    private void closeSAMmodule() {
-        SAMCard.close(this, SAM_CLOSE_REQUEST_CODE, 1);
-    }
+
 }
