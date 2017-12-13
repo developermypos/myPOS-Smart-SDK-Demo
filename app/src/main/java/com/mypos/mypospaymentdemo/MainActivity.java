@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int PAYMENT_REQUEST_CODE = 1;
     private static final int REFUND_REQUEST_CODE  = 2;
     private static final int PAYMENT_REQUEST_REQUEST_CODE = 3;
+    private static final int VOID_REQUEST_CODE  = 4;
+
+    private int voidDataSTAN = 0;
+    private String voidDataAuthCode = null;
+    private String voidDataDateTime = null;
 
     PrinterResultBroadcastReceiver broadcastReceiver;
 
@@ -124,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
 
         tmpTextView = (TextView) findViewById(R.id.tsi);
         tmpTextView.setText("TSI: " + data.getStringExtra("TSI"));
+
+        voidDataSTAN = data.getIntExtra("STAN", 0);
+        voidDataAuthCode = data.getStringExtra("authorization_code");
+        voidDataDateTime = data.getStringExtra("date_time");
     }
 
     /**
@@ -161,6 +170,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.start_refund:
                 startRefund();
+                break;
+            case R.id.test_void:
+                startVoid();
+                break;
+            case R.id.test_void_ex:
+                startVoidEx();
                 break;
             case R.id.test_print:
                 testPrint();
@@ -252,6 +267,37 @@ public class MainActivity extends AppCompatActivity {
         // Start the transaction
         MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE);
 
+    }
+
+    /**
+     * Starts a void transaction
+     */
+    private void startVoid() {
+        // Build the void request
+        Intent intentVoid;
+        intentVoid = new Intent("com.mypos.transaction.VOID");
+
+        startActivityForResult(intentVoid, VOID_REQUEST_CODE);
+    }
+
+    /**
+     * Starts a void transaction by transaction data
+     */
+    private void startVoidEx() {
+        // Build the void request
+        Intent intentVoidEx;
+        intentVoidEx = new Intent("com.mypos.transaction.VOID_EX");
+
+        if (voidDataSTAN == 0 || voidDataAuthCode == null || voidDataDateTime == null) {
+            showToast("No last transaction data");
+            return;
+        }
+
+        intentVoidEx.putExtra("STAN", voidDataSTAN);
+        intentVoidEx.putExtra("authorization_code", voidDataAuthCode);
+        intentVoidEx.putExtra("date_time", voidDataDateTime);
+
+        startActivityForResult(intentVoidEx, VOID_REQUEST_CODE);
     }
 
     /**

@@ -63,6 +63,33 @@
             android:onClick="onClick"
             android:text="@string/start_payment_no_receipt"
             android:textSize="10sp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+
+        <Button
+            android:id="@+id/test_void"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_void"/>
+
+        <Button
+            android:id="@+id/test_void_ex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_void_ex"/>
+
     </LinearLayout>
 
     <LinearLayout
