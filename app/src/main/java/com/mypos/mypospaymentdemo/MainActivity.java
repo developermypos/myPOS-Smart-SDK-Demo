@@ -1,7 +1,9 @@
 package com.mypos.mypospaymentdemo;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -10,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private String voidDataAuthCode = null;
     private String voidDataDateTime = null;
 
-    private CheckBox skipVoidConfCB;
-
     PrinterResultBroadcastReceiver broadcastReceiver;
 
     @Override
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-
-        skipVoidConfCB = (CheckBox) findViewById(R.id.skip_void_confirm_check_box);
     }
 
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
@@ -282,11 +279,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intentVoid;
         intentVoid = new Intent("com.mypos.transaction.VOID");
 
-        //available in myPOS OS version: 1.0.1
-        //flag that may skip confirmation void screen and continue directly to processing
-        intentVoid.putExtra("skip_confirmation_screen", skipVoidConfCB.isChecked());
-
-        startActivityForResult(intentVoid, VOID_REQUEST_CODE);
+        displayVoidOptions(intentVoid);
     }
 
     /**
@@ -306,11 +299,33 @@ public class MainActivity extends AppCompatActivity {
         intentVoidEx.putExtra("authorization_code", voidDataAuthCode);
         intentVoidEx.putExtra("date_time", voidDataDateTime);
 
-        //available in myPOS OS version: 1.0.1
-        //flag that may skip confirmation void screen and continue directly to processing
-        intentVoidEx.putExtra("skip_confirmation_screen", skipVoidConfCB.isChecked());
+       displayVoidOptions(intentVoidEx);
+    }
 
-        startActivityForResult(intentVoidEx, VOID_REQUEST_CODE);
+    private void displayVoidOptions(final Intent intent)
+    {
+        final CharSequence[] items = {getResources().getString(R.string.skip_void_conf)};
+        final boolean[] skipVoiFlags = new boolean[1];
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.options)
+                .setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                       skipVoiFlags[0] = isChecked;
+                    }
+                }).setPositiveButton(R.string.contin, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //available in myPOS OS version: 1.0.1
+                        //flag that may skip confirmation void screen and continue directly to processing
+                        intent.putExtra("skip_confirmation_screen", skipVoiFlags[0]);
+
+                        startActivityForResult(intent, VOID_REQUEST_CODE);
+                    }
+                }
+                ).create();
+        dialog.show();
     }
 
     /**
