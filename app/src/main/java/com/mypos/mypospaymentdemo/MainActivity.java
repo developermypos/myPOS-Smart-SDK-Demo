@@ -277,6 +277,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intentVoid;
         intentVoid = new Intent("com.mypos.transaction.VOID");
 
+        //available in myPOS OS version: 1.0.1
+        //flag that may skip confirmation void screen and continue directly to processing
+        intentVoid.putExtra("skip_confirmation_screen", true);
+
         startActivityForResult(intentVoid, VOID_REQUEST_CODE);
     }
 
@@ -296,6 +300,10 @@ public class MainActivity extends AppCompatActivity {
         intentVoidEx.putExtra("STAN", voidDataSTAN);
         intentVoidEx.putExtra("authorization_code", voidDataAuthCode);
         intentVoidEx.putExtra("date_time", voidDataDateTime);
+
+        //available in myPOS OS version: 1.0.1
+        //flag that may skip confirmation void screen and continue directly to processing
+        intentVoidEx.putExtra("skip_confirmation_screen", true);
 
         startActivityForResult(intentVoidEx, VOID_REQUEST_CODE);
     }
