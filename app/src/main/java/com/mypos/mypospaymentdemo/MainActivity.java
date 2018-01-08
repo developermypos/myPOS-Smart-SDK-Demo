@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private String voidDataAuthCode = null;
     private String voidDataDateTime = null;
 
+    private CheckBox skipVoidConfCB;
+
     PrinterResultBroadcastReceiver broadcastReceiver;
 
     @Override
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
+
+        skipVoidConfCB = (CheckBox) findViewById(R.id.skip_void_confirm_check_box);
     }
 
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
@@ -279,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
         //available in myPOS OS version: 1.0.1
         //flag that may skip confirmation void screen and continue directly to processing
-        intentVoid.putExtra("skip_confirmation_screen", true);
+        intentVoid.putExtra("skip_confirmation_screen", skipVoidConfCB.isChecked());
 
         startActivityForResult(intentVoid, VOID_REQUEST_CODE);
     }
@@ -303,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
         //available in myPOS OS version: 1.0.1
         //flag that may skip confirmation void screen and continue directly to processing
-        intentVoidEx.putExtra("skip_confirmation_screen", true);
+        intentVoidEx.putExtra("skip_confirmation_screen", skipVoidConfCB.isChecked());
 
         startActivityForResult(intentVoidEx, VOID_REQUEST_CODE);
     }
