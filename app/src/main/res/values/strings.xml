@@ -13,4 +13,7 @@
     <string name="skip_void_conf">Skip confirmation screen</string>
     <string name="options">Options</string>
     <string name="contin">Continue</string>
+
+    <string name="start_payment_only_customer_receipt">Payment\n(only customer receipt)</string>
+    <string name="start_payment_only_merchant_receipt">Payment\n(only merchant receipt)</string>
 </resources>

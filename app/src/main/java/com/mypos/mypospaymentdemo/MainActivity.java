@@ -170,6 +170,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.start_payment_no_receipt:
                 startPayment(true, true);
                 break;
+            case R.id.start_payment_only_merchant_receipt:
+                startPayment2(false, true);
+                break;
+            case R.id.start_payment_only_customer_receipt:
+                startPayment2(true, false);
+                break;
             case R.id.start_refund:
                 startRefund();
                 break;
@@ -252,6 +258,21 @@ public class MainActivity extends AppCompatActivity {
         MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
                 skipConfirmationScreen,
                 skipReceipt ? ReceiptPrintMode.NO_RECEIPT : ReceiptPrintMode.AUTOMATICALLY);
+
+    }
+
+    private void startPayment2(boolean skipMerchantReceipt, boolean skipCustomerReceipt) {
+        // Build the payment
+        MyPOSPayment payment = MyPOSPayment.builder()
+                .productAmount(13.37)
+                .currency(Currency.EUR)
+                .foreignTransactionId(UUID.randomUUID().toString())
+                .printMerchantReceipt(skipMerchantReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .printCustomerReceipt(skipCustomerReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_AFTER_CONFIRMATION)
+                .build();
+
+        // Start the transaction
+        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE);
 
     }
 

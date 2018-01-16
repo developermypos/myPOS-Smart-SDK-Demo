@@ -74,6 +74,33 @@
         >
 
         <Button
+            android:id="@+id/start_payment_only_customer_receipt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_payment_only_customer_receipt"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/start_payment_only_merchant_receipt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/start_payment_only_merchant_receipt"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+
+        <Button
             android:id="@+id/test_void"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
