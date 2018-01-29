@@ -22,6 +22,7 @@ import com.mypos.smartsdk.MyPOSPayment;
 import com.mypos.smartsdk.MyPOSPaymentRequest;
 import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
+import com.mypos.smartsdk.MyPOSVoidEx;
 import com.mypos.smartsdk.ReceiptPrintMode;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
@@ -297,10 +298,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startVoid() {
         // Build the void request
-        Intent intentVoid;
-        intentVoid = new Intent("com.mypos.transaction.VOID");
+        displayVoidOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(boolean[] options) {
+                MyPOSAPI.openVoidActivity(MainActivity.this, null, VOID_REQUEST_CODE, options[0]);
+            }
+        });
 
-        displayVoidOptions(intentVoid);
     }
 
     /**
@@ -308,27 +312,34 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startVoidEx() {
         // Build the void request
-        Intent intentVoidEx;
-        intentVoidEx = new Intent("com.mypos.transaction.VOID_EX");
 
         if (voidDataSTAN == 0 || voidDataAuthCode == null || voidDataDateTime == null) {
             showToast("No last transaction data");
             return;
         }
 
-        intentVoidEx.putExtra("STAN", voidDataSTAN);
-        intentVoidEx.putExtra("authorization_code", voidDataAuthCode);
-        intentVoidEx.putExtra("date_time", voidDataDateTime);
+        final MyPOSVoidEx voidEx = MyPOSVoidEx.builder()
+                .STAN(voidDataSTAN)
+                .authCode(voidDataAuthCode)
+                .dateTime(voidDataDateTime)
+                .build();
 
-       displayVoidOptions(intentVoidEx);
+        displayVoidOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(boolean[] options) {
+                MyPOSAPI.openVoidActivity(MainActivity.this, voidEx, VOID_REQUEST_CODE, options[0]);
+            }
+        });
+
     }
 
-    private void displayVoidOptions(final Intent intent)
+    private void displayVoidOptions(final IOptionsSelected optionsListener)
     {
         final CharSequence[] items = {getResources().getString(R.string.skip_void_conf)};
         final boolean[] skipVoiFlags = new boolean[1];
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(R.string.options)
                 .setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -339,13 +350,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //available in myPOS OS version: 1.0.1
-                        //flag that may skip confirmation void screen and continue directly to processing
-                        intent.putExtra("skip_confirmation_screen", skipVoiFlags[0]);
-
-                        startActivityForResult(intent, VOID_REQUEST_CODE);
+                        if (optionsListener != null)
+                            optionsListener.onReady(skipVoiFlags);
                     }
                 }
-                ).create();
+                ).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                }).create();
+
         dialog.show();
     }
 
@@ -420,6 +433,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private interface IOptionsSelected
+    {
+        void onReady(boolean[] options);
     }
 
 }
