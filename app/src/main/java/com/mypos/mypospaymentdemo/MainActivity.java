@@ -23,9 +23,11 @@ import com.mypos.smartsdk.MyPOSPaymentRequest;
 import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.MyPOSVoidEx;
+import com.mypos.smartsdk.OnPOSInfoListener;
 import com.mypos.smartsdk.ReceiptPrintMode;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
+import com.mypos.smartsdk.data.POSInfo;
 import com.mypos.smartsdk.print.PrinterCommand;
 
 import java.util.ArrayList;
@@ -58,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
+
+        MyPOSAPI.registerPOSInfo(this, new OnPOSInfoListener() {
+            @Override
+            public void onReceive(POSInfo info) {
+                Toast.makeText(MainActivity.this, "pos info is received", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
