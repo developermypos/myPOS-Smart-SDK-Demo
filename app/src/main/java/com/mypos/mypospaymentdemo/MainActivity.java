@@ -235,7 +235,10 @@ public class MainActivity extends AppCompatActivity {
         commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Normal row 3\n\n"));
         commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Double height\n\n\n", false, true));
         commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Normal row again\n"));
-        commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Double width\n", true, false));
+        commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Size 35 right", 35, PrinterCommand.Alignment.ALIGN_RIGHT));
+        commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Center row", PrinterCommand.Alignment.ALIGN_CENTER));
+        commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "Size 60", 60));
+        commands.add(new PrinterCommand(PrinterCommand.CommandType.TEXT, "1.00 EUR").setAlignment(PrinterCommand.Alignment.ALIGN_RIGHT).setDoubleHeight(true));
         commands.add(new PrinterCommand(PrinterCommand.CommandType.FOOTER));
 
         // Add image to be sent
