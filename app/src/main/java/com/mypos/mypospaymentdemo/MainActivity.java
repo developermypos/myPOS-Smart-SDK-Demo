@@ -22,9 +22,8 @@ import com.mypos.smartsdk.MyPOSPayment;
 import com.mypos.smartsdk.MyPOSPaymentRequest;
 import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
-import com.mypos.smartsdk.MyPOSVoidEx;
+import com.mypos.smartsdk.MyPOSVoid;
 import com.mypos.smartsdk.OnPOSInfoListener;
-import com.mypos.smartsdk.ReceiptPrintMode;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
 import com.mypos.smartsdk.data.POSInfo;
@@ -265,12 +264,13 @@ public class MainActivity extends AppCompatActivity {
                 .productAmount(13.37)
                 .currency(Currency.EUR)
                 .foreignTransactionId(UUID.randomUUID().toString())
+                .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
                 .build();
 
         // Start the transaction
         MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
-                skipConfirmationScreen,
-                skipReceipt ? ReceiptPrintMode.NO_RECEIPT : ReceiptPrintMode.AUTOMATICALLY);
+                skipConfirmationScreen);
 
     }
 
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         displayVoidOptions(new IOptionsSelected() {
             @Override
             public void onReady(boolean[] options) {
-                MyPOSAPI.openVoidActivity(MainActivity.this, null, VOID_REQUEST_CODE, options[0]);
+                MyPOSAPI.openVoidActivity(MainActivity.this, MyPOSVoid.builder().voidLastTransactionFlag(true).build(), VOID_REQUEST_CODE, options[0]);
             }
         });
 
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        final MyPOSVoidEx voidEx = MyPOSVoidEx.builder()
+        final MyPOSVoid voidEx = MyPOSVoid.builder()
                 .STAN(voidDataSTAN)
                 .authCode(voidDataAuthCode)
                 .dateTime(voidDataDateTime)
