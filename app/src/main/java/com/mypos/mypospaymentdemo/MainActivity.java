@@ -24,6 +24,7 @@ import com.mypos.smartsdk.MyPOSRefund;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.MyPOSVoid;
 import com.mypos.smartsdk.OnPOSInfoListener;
+import com.mypos.smartsdk.ReferenceType;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
 import com.mypos.smartsdk.data.POSInfo;
@@ -266,12 +267,13 @@ public class MainActivity extends AppCompatActivity {
                 .foreignTransactionId(UUID.randomUUID().toString())
                 .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
                 .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .operatorCode(112)// Available in version 1.0.3
+                .reference("123XAVBDA323", ReferenceType.REFERENCE_NUMBER)// Available in version 1.0.3
                 .build();
 
         // Start the transaction
         MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
                 skipConfirmationScreen);
-
     }
 
     private void startPayment2(boolean skipMerchantReceipt, boolean skipCustomerReceipt) {
