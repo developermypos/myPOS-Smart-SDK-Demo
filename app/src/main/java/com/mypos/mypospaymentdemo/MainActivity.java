@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 .foreignTransactionId(UUID.randomUUID().toString())
                 .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
                 .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
-                .operatorCode(112)// Available in version 1.0.3
+                .operatorCode("112")// Available in version 1.0.3
                 .reference("123XAVBDA323", ReferenceType.REFERENCE_NUMBER)// Available in version 1.0.3
                 .build();
 
