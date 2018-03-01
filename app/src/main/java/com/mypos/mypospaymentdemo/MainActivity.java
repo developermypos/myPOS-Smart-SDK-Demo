@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.mypos.smartsdk.Currency;
 import com.mypos.smartsdk.MyPOSAPI;
+import com.mypos.smartsdk.MyPOSGiftCardActivation;
 import com.mypos.smartsdk.MyPOSPayment;
 import com.mypos.smartsdk.MyPOSPaymentRequest;
 import com.mypos.smartsdk.MyPOSRefund;
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REFUND_REQUEST_CODE  = 2;
     private static final int PAYMENT_REQUEST_REQUEST_CODE = 3;
     private static final int VOID_REQUEST_CODE  = 4;
+    private static final int ACTIVATION_CODE  = 5;
+    private static final int DEACTIVATION_CODE  = 6;
+    private static final int CHECK_BALANCE_CODE  = 7;
 
     private int voidDataSTAN = 0;
     private String voidDataAuthCode = null;
@@ -206,6 +210,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.test_SAM:
                 startSAMTest();
+                break;
+            case R.id.test_giftcard_payment:
+                startGiftCardPayment(false, false);
+                break;
+            case R.id.test_giftcard_refund:
+                startGiftCardRefund(false, false);
+                break;
+            case R.id.test_giftcard_check_balance:
+                startGiftCardCheckBalance();
+                break;
+            case R.id.test_giftcard_activation:
+                startGiftCardActivation(false, false);
+                break;
+            case R.id.test_giftcard_deactivation:
+                startGiftCardDeactivation();
                 break;
         }
     }
@@ -437,6 +456,64 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         r.start();
+    }
+
+    private void startGiftCardPayment(boolean skipConfirmationScreen, boolean skipReceipt) {
+        // Build the payment
+        MyPOSPayment payment = MyPOSPayment.builder()
+                .productAmount(13.37)
+                .currency(Currency.EUR)
+                .giftCardTransaction(true)
+                .foreignTransactionId(UUID.randomUUID().toString())
+                .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .operatorCode("112")// Available in version 1.0.3
+                .reference("123XAVBDA323", ReferenceType.REFERENCE_NUMBER)// Available in version 1.0.3
+                .build();
+
+        // Start the transaction
+        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
+                skipConfirmationScreen);
+    }
+
+    private void startGiftCardRefund(boolean skipConfirmationScreen, boolean skipReceipt) {
+        // Build the payment
+        MyPOSRefund refund = MyPOSRefund.builder()
+                .refundAmount(13.37)
+                .currency(Currency.EUR)
+                .giftCardTransaction(true)
+                .foreignTransactionId(UUID.randomUUID().toString())
+                .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .build();
+
+        // Start the transaction
+        MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE,
+                skipConfirmationScreen);
+    }
+
+    private void startGiftCardCheckBalance() {
+        // Start the transaction
+        MyPOSAPI.openGiftCardCheckBalanceActivity(MainActivity.this, UUID.randomUUID().toString(), CHECK_BALANCE_CODE);
+    }
+
+    private void startGiftCardActivation(boolean skipConfirmationScreen, boolean skipReceipt) {
+        //Build activation data
+        MyPOSGiftCardActivation activation = MyPOSGiftCardActivation.builder()
+                .productAmount(10.0)
+                .currency(Currency.EUR)
+                .foreignTransactionId(UUID.randomUUID().toString())
+                .printMerchantReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .printCustomerReceipt(skipReceipt ? MyPOSUtil.RECEIPT_OFF : MyPOSUtil.RECEIPT_ON)
+                .build();
+
+        // Start the transaction
+        MyPOSAPI.openGiftCardActivationActivity(MainActivity.this, activation, ACTIVATION_CODE, skipConfirmationScreen);
+    }
+
+    private void startGiftCardDeactivation() {
+        // Start the transaction
+        MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), DEACTIVATION_CODE);
     }
 
     public void showToast(final String toast)

@@ -13,289 +13,354 @@
     tools:context="com.mypos.mypospaymentdemo.MainActivity"
     android:gravity="center"
     >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
-
-        <Button
-            android:id="@+id/start_payment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_payment"/>
-
-        <Button
-            android:id="@+id/start_refund"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_refund"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
-
-        <Button
-            android:id="@+id/start_payment_no_confirmation_screen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_payment_no_confirmation_screen"
-            android:textSize="10sp"/>
-
-        <Button
-            android:id="@+id/start_payment_no_receipt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_payment_no_receipt"
-            android:textSize="10sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
-
-        <Button
-            android:id="@+id/start_payment_only_customer_receipt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_payment_only_customer_receipt"
-            android:textSize="10sp"/>
-
-        <Button
-            android:id="@+id/start_payment_only_merchant_receipt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_payment_only_merchant_receipt"
-            android:textSize="10sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
-
-        <Button
-            android:id="@+id/test_void"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_void"/>
-
-        <Button
-            android:id="@+id/test_void_ex"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/start_void_ex"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/test_print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/test_print"/>
-
-        <Button
-            android:id="@+id/test_reprint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/reprint"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/test_paymentRequest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/test_paymentRequest" />
-
-        <Button
-            android:id="@+id/test_SAM"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/test_SAMModule" />
-    </LinearLayout>
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/transaction_approved"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Transaction approved: - "/>
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
 
-            <TextView
-                android:id="@+id/response_code"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/start_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_payment"/>
+
+                <Button
+                    android:id="@+id/start_refund"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_refund"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Response code: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/start_payment_no_confirmation_screen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_payment_no_confirmation_screen"
+                    android:textSize="10sp"/>
+
+                <Button
+                    android:id="@+id/start_payment_no_receipt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_payment_no_receipt"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Status: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
 
-            <TextView
-                android:id="@+id/status_text"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/start_payment_only_customer_receipt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_payment_only_customer_receipt"
+                    android:textSize="10sp"/>
+
+                <Button
+                    android:id="@+id/start_payment_only_merchant_receipt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_payment_only_merchant_receipt"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Status text: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
 
-            <TextView
-                android:id="@+id/transaction_date"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/test_void"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_void"/>
+
+                <Button
+                    android:id="@+id/test_void_ex"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/start_void_ex"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Transaction date: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/card_brand"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/test_print"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_print"/>
+
+                <Button
+                    android:id="@+id/test_reprint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/reprint"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Card brand: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/card_entry_mode"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/test_paymentRequest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_paymentRequest" />
+
+                <Button
+                    android:id="@+id/test_SAM"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_SAMModule" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Card entry mode: -"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/pan"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/test_giftcard_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_giftcard_payment" />
+
+                <Button
+                    android:id="@+id/test_giftcard_refund"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_giftcard_refund" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="PAN: - "/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/cardholder_name"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/test_giftcard_activation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_giftcard_activation" />
+
+                <Button
+                    android:id="@+id/test_giftcard_deactivation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_giftcard_deactivation" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="Cardholder name: - "/>
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/test_giftcard_check_balance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="@string/test_giftcard_balance_check" />
+            </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/rrn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="RRN: - "/>
 
 
-            <TextView
-                android:id="@+id/aid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="AID: - "/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="TVR: - "/>
-            <TextView
-                android:id="@+id/tsi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:text="TSI: - "/>
+                    <TextView
+                        android:id="@+id/transaction_approved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Transaction approved: - "/>
 
+                    <TextView
+                        android:id="@+id/response_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Response code: -"/>
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Status: -"/>
+
+                    <TextView
+                        android:id="@+id/status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Status text: -"/>
+
+                    <TextView
+                        android:id="@+id/transaction_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Transaction date: -"/>
+
+                    <TextView
+                        android:id="@+id/card_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Card brand: -"/>
+
+                    <TextView
+                        android:id="@+id/card_entry_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Card entry mode: -"/>
+
+                    <TextView
+                        android:id="@+id/pan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="PAN: - "/>
+
+                    <TextView
+                        android:id="@+id/cardholder_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="Cardholder name: - "/>
+
+
+                    <TextView
+                        android:id="@+id/rrn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="RRN: - "/>
+
+
+                    <TextView
+                        android:id="@+id/aid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="AID: - "/>
+
+                    <TextView
+                        android:id="@+id/tvr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="TVR: - "/>
+                    <TextView
+                        android:id="@+id/tsi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:textSize="18sp"
+                        android:text="TSI: - "/>
+
+                </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </LinearLayout>
