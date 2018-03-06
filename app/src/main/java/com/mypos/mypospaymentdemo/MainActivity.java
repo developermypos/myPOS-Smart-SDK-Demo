@@ -29,6 +29,7 @@ import com.mypos.smartsdk.ReferenceType;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.TransactionProcessingResult;
 import com.mypos.smartsdk.data.POSInfo;
+import com.mypos.smartsdk.exceptions.FunctionalityNotSupportedException;
 import com.mypos.smartsdk.print.PrinterCommand;
 
 import java.util.ArrayList;
@@ -291,8 +292,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
-                skipConfirmationScreen);
+        try {
+            MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE, skipConfirmationScreen);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("payment functionality not supported");
+        }
     }
 
     private void startPayment2(boolean skipMerchantReceipt, boolean skipCustomerReceipt) {
@@ -306,8 +310,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE);
-
+        try {
+            MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("payment functionality not supported");
+        }
     }
 
     /**
@@ -322,7 +329,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE);
+        try {
+            MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("refund functionality not supported");
+        }
 
     }
 
@@ -334,7 +345,11 @@ public class MainActivity extends AppCompatActivity {
         displayVoidOptions(new IOptionsSelected() {
             @Override
             public void onReady(boolean[] options) {
-                MyPOSAPI.openVoidActivity(MainActivity.this, MyPOSVoid.builder().voidLastTransactionFlag(true).build(), VOID_REQUEST_CODE, options[0]);
+                try {
+                    MyPOSAPI.openVoidActivity(MainActivity.this, MyPOSVoid.builder().voidLastTransactionFlag(true).build(), VOID_REQUEST_CODE, options[0]);
+                }catch (FunctionalityNotSupportedException e){
+                    showToast("void functionality not supported");
+                }
             }
         });
 
@@ -360,7 +375,11 @@ public class MainActivity extends AppCompatActivity {
         displayVoidOptions(new IOptionsSelected() {
             @Override
             public void onReady(boolean[] options) {
-                MyPOSAPI.openVoidActivity(MainActivity.this, voidEx, VOID_REQUEST_CODE, options[0]);
+                try {
+                    MyPOSAPI.openVoidActivity(MainActivity.this, voidEx, VOID_REQUEST_CODE, options[0]);
+                }catch (FunctionalityNotSupportedException e){
+                    showToast("void ex functionality not supported");
+                }
             }
         });
 
@@ -411,7 +430,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.createPaymentRequest(MainActivity.this, paymentRequest, PAYMENT_REQUEST_REQUEST_CODE);
+        try {
+            MyPOSAPI.createPaymentRequest(MainActivity.this, paymentRequest, PAYMENT_REQUEST_REQUEST_CODE);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("payment request functionality not supported");
+        }
     }
 
     /**
@@ -472,8 +495,12 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
-                skipConfirmationScreen);
+        try {
+            MyPOSAPI.openPaymentActivity(MainActivity.this, payment, PAYMENT_REQUEST_CODE,
+                    skipConfirmationScreen);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("payment functionality not supported");
+        }
     }
 
     private void startGiftCardRefund(boolean skipConfirmationScreen, boolean skipReceipt) {
@@ -488,13 +515,21 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE,
-                skipConfirmationScreen);
+        try {
+            MyPOSAPI.openRefundActivity(MainActivity.this, refund, REFUND_REQUEST_CODE,
+                    skipConfirmationScreen);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("refund functionality not supported");
+        }
     }
 
     private void startGiftCardCheckBalance() {
         // Start the transaction
-        MyPOSAPI.openGiftCardCheckBalanceActivity(MainActivity.this, UUID.randomUUID().toString(), CHECK_BALANCE_CODE);
+        try {
+            MyPOSAPI.openGiftCardCheckBalanceActivity(MainActivity.this, UUID.randomUUID().toString(), CHECK_BALANCE_CODE);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("gift card check balance functionality not supported");
+        }
     }
 
     private void startGiftCardActivation(boolean skipConfirmationScreen, boolean skipReceipt) {
@@ -508,12 +543,20 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // Start the transaction
-        MyPOSAPI.openGiftCardActivationActivity(MainActivity.this, activation, ACTIVATION_CODE, skipConfirmationScreen);
+        try {
+            MyPOSAPI.openGiftCardActivationActivity(MainActivity.this, activation, ACTIVATION_CODE, skipConfirmationScreen);
+        }catch (FunctionalityNotSupportedException e){
+            showToast("gift card activation functionality not supported");
+        }
     }
 
     private void startGiftCardDeactivation() {
         // Start the transaction
-        MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), DEACTIVATION_CODE);
+        try {
+            MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), DEACTIVATION_CODE);
+        }catch (FunctionalityNotSupportedException e){
+           showToast("gift card deactivation functionality not supported");
+        }
     }
 
     public void showToast(final String toast)
