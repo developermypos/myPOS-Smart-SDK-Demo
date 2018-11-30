@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(POSInfo info) {
                 TerminalData.posinfo = info;
+                findViewById(R.id.progress_layout).setVisibility(View.GONE);
                 Toast.makeText(MainActivity.this, "pos info is received", Toast.LENGTH_SHORT).show();
             }
         });
