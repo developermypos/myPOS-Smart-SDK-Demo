@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout
+    android:id                  ="@+id/keyboard_gridlayout"
+    xmlns:android               ="http://schemas.android.com/apk/res/android"
+    xmlns:grid                  ="http://schemas.android.com/apk/res-auto"
+    android:layout_width        ="match_parent"
+    android:layout_height       ="match_parent"
+    android:background          ="@android:color/darker_gray"
+    grid:alignmentMode          ="alignBounds"
+    grid:columnCount            ="3">
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_1"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="1"
+
+        android:clickable           ="true"/>
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_2"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="2"
+        />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_3"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="3" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_4"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="4" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_5"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="5" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_6"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="6" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_7"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="7" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_8"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="8" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_9"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="9" />
+
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_00"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        grid:layout_columnWeight="1"
+        android:text                ="00" />
+
+    <TextView
+        android:id                  ="@+id/keyboard_number_0"
+        style                       ="@style/CustomKeyboardButton"
+        android:layout_margin       ="0.5dip"
+        android:text                ="0" />
+
+    <LinearLayout
+        android:id                  ="@+id/backspace_btn"
+        android:layout_margin       ="0.5dip"
+        style                       ="@style/CustomKeyboardButton">
+        <ImageView
+            android:layout_width    ="wrap_content"
+            android:layout_height   ="wrap_content"
+            android:src             ="@drawable/backspace_icon"/>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.GridLayout>

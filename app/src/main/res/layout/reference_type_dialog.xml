@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android                   ="http://schemas.android.com/apk/res/android"
+    android:orientation             ="vertical"
+    android:layout_width            ="wrap_content"
+    android:layout_height           ="wrap_content"
+    android:minWidth                ="300dip">
+
+    <TextView
+        android:id              ="@+id/title_text_view"
+        android:layout_width    ="wrap_content"
+        android:layout_height   ="wrap_content"
+        android:textStyle       ="bold"
+        android:textSize        ="20sp"
+        android:text            ="Reference number"
+        android:paddingTop      ="16dip"
+        android:paddingLeft     ="16dip"
+        android:paddingRight    ="16dip"/>
+
+
+    <RadioGroup
+        android:id                  ="@+id/radio_group"
+        android:layout_width        ="wrap_content"
+        android:layout_height       ="wrap_content"
+        android:paddingLeft         ="16dip"
+        android:layout_marginBottom ="16dp">
+
+        <RadioButton
+            android:id              ="@+id/off_radio_button"
+            android:layout_width    ="wrap_content"
+            android:layout_height   ="wrap_content"
+            android:text            ="Off"
+            android:padding         ="10dp"
+            android:textSize        ="17sp"
+            android:button          ="@drawable/radio_button_selector" />
+
+        <RadioButton
+            android:id                  ="@+id/ref_number_radio_button"
+            android:layout_width        ="wrap_content"
+            android:layout_height       ="wrap_content"
+            android:text                ="Reference number"
+            android:button              ="@drawable/radio_button_selector"
+            android:padding             ="10dp"
+            android:textSize            ="17sp"/>
+
+        <RadioButton
+            android:id                  ="@+id/invoice_number_radio_button"
+            android:layout_width        ="wrap_content"
+            android:layout_height       ="wrap_content"
+            android:text                ="Invoice number"
+            android:padding             ="10dp"
+            android:button              ="@drawable/radio_button_selector"
+            android:textSize            ="17sp"/>
+
+
+        <RadioButton
+            android:id                  ="@+id/reservation_number_radio_button"
+            android:layout_width        ="wrap_content"
+            android:layout_height       ="wrap_content"
+            android:text                ="Reservation number"
+            android:padding             ="10dp"
+            android:button              ="@drawable/radio_button_selector"
+            android:textSize            ="17sp"/>
+
+        <RadioButton
+            android:id                  ="@+id/product_id_radio_button"
+            android:layout_width        ="wrap_content"
+            android:layout_height       ="wrap_content"
+            android:text                ="Product ID"
+            android:padding             ="10dp"
+            android:button              ="@drawable/radio_button_selector"
+            android:textSize            ="17sp"/>
+    </RadioGroup>
+
+
+</LinearLayout>
