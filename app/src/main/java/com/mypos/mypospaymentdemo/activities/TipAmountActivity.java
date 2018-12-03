@@ -19,7 +19,7 @@ public class TipAmountActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.title_text);
         TextView currency = (TextView) findViewById(R.id.currency_text);
 
-        title.setText("Tip Amount");
+        title.setText(R.string.tip_amount);
         currency.setText(TerminalData.posinfo.getCurrencyName());
 
         final KeyboardHandler keyboardHandler = new KeyboardHandler(this, findViewById(R.id.root_view), KeyboardHandler.INPUT_TYPE_AMOUNT, true, 8);

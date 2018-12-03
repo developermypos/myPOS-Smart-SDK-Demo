@@ -16,9 +16,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.mypos.mypospaymentdemo.PrinterResultBroadcastReceiver;
 import com.mypos.mypospaymentdemo.R;
+import com.mypos.mypospaymentdemo.util.PersistentDataManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
+import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSUtil;
+import com.mypos.smartsdk.MyPOSVoid;
 import com.mypos.smartsdk.OnPOSInfoListener;
 import com.mypos.smartsdk.SAMCard;
 import com.mypos.smartsdk.data.POSInfo;
@@ -26,18 +29,11 @@ import com.mypos.smartsdk.print.PrinterCommand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private static final int PAYMENT_REQUEST_CODE = 1;
-    private static final int REFUND_REQUEST_CODE  = 2;
-    private static final int PAYMENT_REQUEST_REQUEST_CODE = 3;
-    private static final int VOID_REQUEST_CODE  = 4;
-    private static final int ACTIVATION_CODE  = 5;
-    private static final int DEACTIVATION_CODE  = 6;
-    private static final int CHECK_BALANCE_CODE  = 7;
 
     private int voidDataSTAN = 0;
     private String voidDataAuthCode = null;
@@ -71,28 +67,16 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    }
-
-    /**
-     * Prints the contents of a {@link Bundle} for debug purposes
-     */
-    private String bundleAsString(Bundle data) {
-        return bundleAsString(data, false);
-    }
-
-    private String bundleAsString(Bundle data, boolean indent) {
-        String retString = "";
-        if (data != null) {
-            for (String s : data.keySet()) {
-                Object extra = data.get(s);
-                if (extra instanceof Bundle) {
-                    retString += "\n\tBundle \"" + s + "\":\n" + bundleAsString((Bundle) extra, true);
-                } else {
-                    retString += (String.format("%s%s => %s\n", indent ? "\t\t" : "\t", s, extra));
-                }
+        int status = data.getIntExtra("status", -1);
+        if (status == Utils.TRANSACTION_STATUS_SUCCESS) {
+            if (data.getExtras() != null) {
+                Intent i = new Intent(this, TransactionDataActivity.class);
+                i.putExtras(data.getExtras());
+                startActivityForResult(i, Utils.TRANSACTION_DATA_REQUEST_CODE);
             }
+        } else {
+            Toast.makeText(MainActivity.this, "Transaction is cancelled", Toast.LENGTH_SHORT).show();
         }
-        return retString;
     }
 
     public void onClick(View view) {
@@ -109,6 +93,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.void_btn:
                 startVoid();
                 break;
+            case R.id.preauth_btn:
+                startPreAuth();
+                break;
+            case R.id.preauth_completion_btn:
+                startPreAuthCompletion();
+                break;
+            case R.id.preauth_cancellation_btn:
+                startPreAuthCancellation();
+                break;
+            case R.id.payment_request_btn:
+                startPaymentRequest();
+                break;
            /* case R.id.test_void_ex:
                 startVoidEx();
                 break;*/
@@ -118,12 +114,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.reprint_receipt_btn:
                 reprintLastReceipt();
                 break;
-           /* case R.id.test_paymentRequest:
-                startPaymentRequest();
-                break;*/
-           /* case R.id.test_SAM:
+            case R.id.sam_btn:
                 startSAMTest();
-                break;*/
+                break;
             case R.id.giftcard_btn:
                 startGiftCards();
                 break;
@@ -188,27 +181,90 @@ public class MainActivity extends AppCompatActivity {
     private void startPayment() {
         displayPaymentOptions(new IOptionsSelected() {
             @Override
-            public void onReady(int transpec) {
+            public void onReady(int position) {
                Intent i = new Intent(MainActivity.this, PaymentActivity.class);
-               i.putExtra("tran_spec", transpec);
+               switch (position) {
+                   case IOptionsSelected.POSITION_FIRST:
+                       i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
+                       break;
+                   case IOptionsSelected.POSITION_SECOND:
+                       i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_MOTO);
+                       break;
+                   case IOptionsSelected.POSITION_THIRD:
+                       i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
+                       break;
+               }
                startActivity(i);
             }
-        }, true);
+        }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
     }
 
     /**
      * Starts a refund transaction
      */
     private void startRefund() {
-
+        displayPaymentOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(int position) {
+                Intent i = new Intent(MainActivity.this, RefundActivity.class);
+                switch (position) {
+                    case IOptionsSelected.POSITION_FIRST:
+                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
+                        break;
+                    case IOptionsSelected.POSITION_SECOND:
+                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_MOTO);
+                        break;
+                    case IOptionsSelected.POSITION_THIRD:
+                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
+                        break;
+                }
+                startActivity(i);
+            }
+        }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
     }
 
     /**
      * Starts a void transaction
      */
     private void startVoid() {
+        MyPOSVoid.Builder voidParamas = MyPOSVoid.builder();
+        voidParamas.voidLastTransactionFlag(true);
+        voidParamas.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
+        voidParamas.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
 
+        MyPOSAPI.openVoidActivity(this, voidParamas.build(), Utils.VOID_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
     }
+
+    private void startPreAuth() {
+        displayPaymentOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(int position) {
+                Intent i = new Intent(MainActivity.this, PreAuthActivity.class);
+                switch (position) {
+                    case IOptionsSelected.POSITION_FIRST:
+                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
+                        break;
+                    case IOptionsSelected.POSITION_SECOND:
+                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_MOTO);
+                        break;
+                }
+
+                startActivity(i);
+            }
+        }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction)});
+    }
+
+    private void startPreAuthCompletion() {
+        Intent i = new Intent(MainActivity.this, PreAuthCompletionActivity.class);
+        startActivity(i);
+    }
+
+
+    private void startPreAuthCancellation() {
+        Intent i = new Intent(MainActivity.this, PreAuthCancellationActivity.class);
+        startActivity(i);
+    }
+
 
     /**
      * Starts a void transaction by transaction data
@@ -226,31 +282,43 @@ public class MainActivity extends AppCompatActivity {
      * Starts a payment request transaction
      */
     private void startPaymentRequest() {
-
+        startActivity(new Intent(MainActivity.this, PaymentRequestActivity.class));
     }
 
-    private void displayPaymentOptions(final IOptionsSelected optionsSelected, boolean isGiftcardAllowed) {
-        final CharSequence[] items = new CharSequence[isGiftcardAllowed ? 3 : 2];
-        items[0] = "REGULAR Transaction";
-        items[1] = "MO/TO Transaction";
+    private void startGiftCards() {
+        displayPaymentOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(int position) {
+                switch (position) {
+                    case IOptionsSelected.POSITION_FIRST:
+                        startActivity(new Intent(MainActivity.this, GiftCardActivationActivity.class));
+                        break;
+                    case IOptionsSelected.POSITION_SECOND:
+                        MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), Utils.GIFTCARD_DEACTIVATION_REQUEST_CODE);
+                        break;
+                    case IOptionsSelected.POSITION_THIRD:
+                        MyPOSAPI.openGiftCardCheckBalanceActivity(MainActivity.this, UUID.randomUUID().toString(), Utils.GIFTCARD_BALANCE_CHECK_REQUEST_CODE);
+                        break;
+                }
+            }
+        }, new CharSequence[] {getString(R.string.giftcard_activation), getString(R.string.giftcard_deactivation), getString(R.string.giftcard_balance)});
+    }
 
-        if (isGiftcardAllowed)
-            items[2] = "GiftCard Transaction";
-
-        final int[] tranSpec = new int[1];
+    private void displayPaymentOptions(final IOptionsSelected optionsSelected, CharSequence[] items) {
+        final int[] position = new int[1];
 
         final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setCancelable(false)
-                .setTitle(R.string.options)
+                .setTitle(getString(R.string.transaction_type))
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface var1, int position) {
-                        tranSpec[0] = position;
+                    public void onClick(DialogInterface var1, int pos) {
+                        position[0] = pos;
                     }
                 }).setPositiveButton(R.string.contin, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                optionsSelected.onReady(tranSpec[0]);
+                                optionsSelected.onReady(position[0]);
                             }
                         }
                 ).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -305,10 +373,6 @@ public class MainActivity extends AppCompatActivity {
         r.start();
     }
 
-    private void startGiftCards() {
-
-    }
-
 
     public void showToast(final String toast)
     {
@@ -320,9 +384,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private interface IOptionsSelected
-    {
-        void onReady(int transpec);
+    private interface IOptionsSelected {
+        int POSITION_FIRST = 0;
+        int POSITION_SECOND = 1;
+        int POSITION_THIRD = 2;
+
+        void onReady(int position);
     }
 
 }

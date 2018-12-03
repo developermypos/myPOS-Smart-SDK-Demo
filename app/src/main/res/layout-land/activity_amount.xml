@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id              ="@+id/root_view"
+    xmlns:android           ="http://schemas.android.com/apk/res/android"
+    android:layout_width    ="match_parent"
+    android:layout_height   ="match_parent"
+    android:background      ="@color/main_light_blue"
+    xmlns:card_view         ="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width    ="match_parent"
+        android:layout_height   ="match_parent"
+        android:orientation     ="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id                  ="@+id/toolbar"
+            android:layout_height       ="56dp"
+            android:layout_width        ="match_parent"
+            android:background          ="@color/main_blue">
+
+            <RelativeLayout
+                android:id              ="@+id/title_layout"
+                android:layout_width    ="match_parent"
+                android:layout_height   ="56dp"
+                android:layout_gravity  ="center_vertical|fill_horizontal" >
+
+                <TextView
+                    android:id                      ="@+id/title_text"
+                    android:layout_width            ="wrap_content"
+                    android:layout_height           ="wrap_content"
+                    android:textColor               ="@color/main_white"
+                    android:textStyle               ="bold"
+                    android:textSize                ="20sp"
+                    android:layout_centerInParent   ="true"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width    ="match_parent"
+            android:layout_height   ="0dip"
+            android:layout_weight   ="1"
+            android:orientation     ="horizontal">
+
+            <LinearLayout
+                android:id              ="@+id/currency_layout"
+                android:layout_width    ="0dip"
+                android:layout_height   ="match_parent"
+                android:gravity         ="center"
+                android:orientation     ="vertical"
+                android:layout_weight   ="50">
+
+                <TextView
+                    android:layout_width    ="wrap_content"
+                    android:layout_height   ="wrap_content"
+                    android:text            ="@string/amount"
+                    android:textSize        ="22sp"
+                    android:textAllCaps     ="true"/>
+
+                <LinearLayout
+                    android:layout_width            ="wrap_content"
+                    android:layout_height           ="wrap_content"
+                    android:layout_centerInParent   ="true"
+                    android:layout_marginLeft       ="16dip"
+                    android:layout_marginRight      ="16dip"
+                    android:orientation             ="horizontal">
+
+                    <LinearLayout
+                        android:id                      ="@+id/amount_currency_layout"
+                        android:layout_width            ="wrap_content"
+                        android:layout_height           ="wrap_content"
+                        android:orientation             ="horizontal">
+
+                        <TextView
+                            android:id                      ="@+id/sum_text"
+                            android:layout_width            ="wrap_content"
+                            android:layout_height           ="wrap_content"
+                            android:maxLines                ="1"
+                            android:maxLength               ="13"
+                            android:text                    ="0.00"
+                            android:textSize                ="60sp" />
+
+                        <TextView
+                            android:id                      ="@+id/currency_text"
+                            android:layout_width            ="wrap_content"
+                            android:layout_height           ="wrap_content"
+                            android:layout_marginLeft       ="10dip"
+                            android:layout_gravity          ="bottom"
+                            android:textSize                ="40sp"
+                            android:paddingBottom           ="5dip"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id              ="@+id/code_layout"
+                android:layout_width    ="0dp"
+                android:layout_height   ="match_parent"
+                android:gravity         ="center"
+                android:orientation     ="vertical"
+                android:layout_weight   ="50"
+                android:visibility      ="gone">
+
+                <TextView
+                    android:layout_width    ="wrap_content"
+                    android:layout_height   ="wrap_content"
+                    android:text            ="@string/code"
+                    android:textSize        ="22sp"
+                    android:textAllCaps     ="true"/>
+
+                <LinearLayout
+                    android:layout_width            ="wrap_content"
+                    android:layout_height           ="wrap_content"
+                    android:layout_centerInParent   ="true"
+                    android:layout_marginLeft       ="16dip"
+                    android:layout_marginRight      ="16dip"
+                    android:orientation             ="vertical">
+
+                    <TextView
+                        android:id                      ="@+id/code_text"
+                        android:layout_width            ="wrap_content"
+                        android:layout_height           ="wrap_content"
+                        android:maxLines                ="1"
+                        android:maxLength               ="13"
+                        android:layout_marginTop        ="10dp"
+                        android:hint                    ="******"
+                        android:textSize                ="30sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/main_blue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id                  ="@+id/keyboard_container"
+                android:layout_width        ="0dip"
+                android:layout_height       ="match_parent"
+                android:layout_weight       ="50">
+
+                <include
+                    layout="@layout/custom_keyboard_layout" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id                  ="@+id/charge_btn"
+            android:layout_width        ="match_parent"
+            android:layout_height       ="80dp"
+            android:textSize            ="20sp"
+            android:background          ="@color/main_blue"
+            android:text                ="@string/done"
+            android:textColor           ="@color/main_white" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id              ="@+id/progress_layout"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="match_parent"
+        android:background      ="#77000000"
+        android:clickable       ="true"
+        android:visibility      ="gone">
+
+        <ProgressBar
+            android:layout_width            ="wrap_content"
+            android:layout_height           ="wrap_content"
+            android:layout_centerInParent   ="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

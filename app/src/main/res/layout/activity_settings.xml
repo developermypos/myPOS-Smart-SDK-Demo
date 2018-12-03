@@ -19,8 +19,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enable Tipping"
-                android:textSize="20sp" />
+                android:text="@string/enable_tipping"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <android.support.v7.widget.SwitchCompat
@@ -44,8 +45,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Multioperator mode"
-                android:textSize="20sp" />
+                android:text="@string/multi_operator_mode"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <android.support.v7.widget.SwitchCompat
@@ -69,8 +71,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Skip confirmation screen"
-                android:textSize="20sp" />
+                android:text="@string/skip_confirmation_screen"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <android.support.v7.widget.SwitchCompat
@@ -95,15 +98,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Reference number"
-                android:textSize="20sp" />
+                android:text="@string/reference_number"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <TextView
                 android:id="@+id/reference_number_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Off" />
+                android:text="@string/off"
+                android:textColor="@color/main_blue" />
 
         </LinearLayout>
 
@@ -122,8 +127,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Customer Receipt"
-                android:textSize="20sp" />
+                android:text="@string/customer_receipt"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <RadioGroup
@@ -135,19 +141,22 @@
                     android:id="@+id/cust_auto_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Automatically" />
+                    android:text="@string/automatically"
+                    android:textColor="@color/main_blue" />
 
                 <RadioButton
                     android:id="@+id/cust_disabled_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disabled" />
+                    android:text="@string/disabled"
+                    android:textColor="@color/main_blue" />
 
                 <RadioButton
                     android:id="@+id/cust_after_conf_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="After confirmation" />
+                    android:text="@string/after_confirmation"
+                    android:textColor="@color/main_blue"  />
 
             </RadioGroup>
 
@@ -169,8 +178,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Merchant Receipt"
-                android:textSize="20sp" />
+                android:text="@string/merchant_receipt"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
 
             <RadioGroup
@@ -183,13 +193,15 @@
                     android:id="@+id/merch_auto_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Automatically" />
+                    android:text="@string/automatically"
+                    android:textColor="@color/main_blue" />
 
                 <RadioButton
                     android:id="@+id/merch_disabled_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disabled" />
+                    android:text="@string/disabled"
+                    android:textColor="@color/main_blue" />
 
 
             </RadioGroup>

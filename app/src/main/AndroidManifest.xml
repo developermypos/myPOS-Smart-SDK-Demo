@@ -3,6 +3,7 @@
     package="com.mypos.mypospaymentdemo">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".PosApplication"
         android:allowBackup="true"
@@ -22,7 +23,16 @@
         <activity android:name=".activities.PaymentActivity" />
         <activity android:name=".activities.TipAmountActivity" />
         <activity android:name=".activities.MultiOperatorCodeActivity" />
-        <activity android:name=".activities.ReferenceNumberActivity"></activity>
+        <activity android:name=".activities.ReferenceNumberActivity" />
+        <activity android:name=".activities.GiftCardActivationActivity" />
+        <activity android:name=".activities.RefundActivity" />
+        <activity android:name=".activities.PreAuthActivity" />
+        <activity android:name=".activities.PreAuthCompletionActivity" />
+        <activity android:name=".activities.PreAuthCancellationActivity" />
+        <activity android:name=".activities.PaymentRequestActivity" />
+        <activity android:name=".activities.PreAuthCodeActivity" />
+        <activity android:name=".activities.TransactionDataActivity" />
+        <activity android:name=".activities.CredentialActivity"></activity>
     </application>
 
 </manifest>

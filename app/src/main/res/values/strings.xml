@@ -1,24 +1,57 @@
 <resources>
     <string name="app_name">MyPOS Smart SDK demo</string>
-    <string name="start_payment">Start Payment</string>
-    <string name="start_refund">Start Refund</string>
-    <string name="start_void">Start VOID</string>
-    <string name="start_void_ex">Start VOID by tran data</string>
-    <string name="test_print">Test Print</string>
-    <string name="reprint">Last receipt</string>
-    <string name="start_payment_no_confirmation_screen">Payment (no conf. screen)</string>
-    <string name="start_payment_no_receipt">Payment (no receipt)</string>
-    <string name="test_paymentRequest">Payment request</string>
-    <string name="test_SAMModule">TEST SAM MODULE</string>
-    <string name="test_giftcard_payment">GIFTCARD PAYMENT</string>
-    <string name="test_giftcard_refund">GIFTCARD REFUND</string>
-    <string name="test_giftcard_balance_check">GIFTCARD CHECK BALANCE</string>
-    <string name="test_giftcard_activation">GIFTCARD ACTIVATION</string>
-    <string name="test_giftcard_deactivation">GIFTCARD DEACTIVATION</string>
-    <string name="skip_void_conf">Skip confirmation screen</string>
-    <string name="options">Options</string>
     <string name="contin">Continue</string>
 
     <string name="start_payment_only_customer_receipt">Payment\n(only customer receipt)</string>
     <string name="start_payment_only_merchant_receipt">Payment\n(only merchant receipt)</string>
+
+    <string name="payment">Purchase</string>
+    <string name="refund">Refund</string>
+    <string name="reversal">Void</string>
+    <string name="preauth">Pre-Authorization</string>
+    <string name="preauth_completion">Pre-Auth Completion</string>
+    <string name="preauth_cancellation">Pre-Auth Cancellation</string>
+    <string name="giftcards">Giftcards</string>
+    <string name="payment_request">Payment Request</string>
+    <string name="reprint_receipt">Reprint Receipt</string>
+    <string name="print_text">Print Text</string>
+    <string name="test_sam">Test SAM</string>
+
+    <string name="transaction_type">Transaction type</string>
+
+    <string name="regular_transaction">Regular Transaction</string>
+    <string name="moto_transaction">MO/TO Transaction</string>
+    <string name="giftcard_transaction">GiftCard Transaction</string>
+
+    <string name="giftcard_activation">GiftCard Activation</string>
+    <string name="giftcard_deactivation">GiftCard Deactivation</string>
+    <string name="giftcard_balance">GiftCard Balance Check</string>
+
+    <string name="enable_tipping">Enable Tipping</string>
+    <string name="multi_operator_mode">Multioperator mode</string>
+    <string name="skip_confirmation_screen">Skip confirmation screen</string>
+    <string name="reference_number">Reference number</string>
+    <string name="customer_receipt">Customer Receipt</string>
+    <string name="merchant_receipt">Merchant receipt</string>
+
+    <string name="automatically">Automatically</string>
+    <string name="disabled">Disabled</string>
+    <string name="after_confirmation">After confirmation</string>
+
+    <string name="off">Off</string>
+    <string name="invoice_number">Invoice number</string>
+    <string name="reservation_number">Reservation number</string>
+    <string name="product_id">Product ID</string>
+
+    <string name="amount">Amount:</string>
+    <string name="tip_amount">Tip Amount</string>
+    <string name="code">Code:</string>
+    <string name="done">Done</string>
+    <string name="credential_title">MOBILE NUMBER OR E-MAIL:</string>
+    <string name="credential_hint">Enter number or e-mail</string>
+    <string name="reference_number_title">ENTER REFERENCE NUMBER:</string>
+    <string name="send_to">Send to</string>
+    <string name="operator_code">Operator Code</string>
+    <string name="preauth_code">Pre-Auth Code</string>
+    <string name="enter">Enter: </string>
 </resources>

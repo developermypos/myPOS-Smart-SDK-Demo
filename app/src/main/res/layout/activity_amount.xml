@@ -48,14 +48,13 @@
             <TextView
                 android:layout_width    ="wrap_content"
                 android:layout_height   ="wrap_content"
-                android:text            ="Amount:"
+                android:text            ="@string/amount"
                 android:textSize        ="22sp"
                 android:textAllCaps     ="true"/>
 
             <LinearLayout
                 android:layout_width            ="wrap_content"
                 android:layout_height           ="wrap_content"
-                android:layout_centerInParent   ="true"
                 android:layout_marginLeft       ="16dip"
                 android:layout_marginRight      ="16dip"
                 android:orientation             ="horizontal">
@@ -79,7 +78,7 @@
                         android:id                      ="@+id/currency_text"
                         android:layout_width            ="wrap_content"
                         android:layout_height           ="wrap_content"
-                        android:layout_marginLeft       ="10dip"
+                        android:layout_marginStart      ="10dip"
                         android:layout_gravity          ="bottom"
                         android:textSize                ="40sp"
                         android:paddingBottom           ="5dip"/>
@@ -102,14 +101,13 @@
             <TextView
                 android:layout_width    ="wrap_content"
                 android:layout_height   ="wrap_content"
-                android:text            ="Code:"
+                android:text            ="@string/code"
                 android:textSize        ="22sp"
                 android:textAllCaps     ="true"/>
 
             <LinearLayout
                 android:layout_width            ="wrap_content"
                 android:layout_height           ="wrap_content"
-                android:layout_centerInParent   ="true"
                 android:layout_marginLeft       ="16dip"
                 android:layout_marginRight      ="16dip"
                 android:orientation             ="vertical">
@@ -149,7 +147,7 @@
             android:layout_height       ="60dp"
             android:textSize            ="20sp"
             android:background          ="@color/main_blue"
-            android:text                ="DONE"
+            android:text                ="@string/done"
             android:textColor           ="@color/main_white" />
 
     </LinearLayout>

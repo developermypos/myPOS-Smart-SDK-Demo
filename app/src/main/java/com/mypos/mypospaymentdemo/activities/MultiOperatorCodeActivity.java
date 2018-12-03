@@ -17,7 +17,7 @@ public class MultiOperatorCodeActivity extends AppCompatActivity {
 
         TextView title = (TextView) findViewById(R.id.title_text);
 
-        title.setText("Operator Code");
+        title.setText(R.string.operator_code);
         findViewById(R.id.currency_layout).setVisibility(View.GONE);
         findViewById(R.id.code_layout).setVisibility(View.VISIBLE);
 

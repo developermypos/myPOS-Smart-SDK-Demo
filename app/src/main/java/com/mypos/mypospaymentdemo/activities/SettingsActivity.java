@@ -1,6 +1,8 @@
 package com.mypos.mypospaymentdemo.activities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -93,68 +95,63 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void showReferenceNumberDialog(){
-        final View view = LayoutInflater.from(this).inflate(R.layout.reference_type_dialog, null);
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(view);
+        final int[] checkedId = new int[1];
+        final CharSequence[] items = new CharSequence[] {getString(R.string.off), getString(R.string.reference_number), getString(R.string.invoice_number), getString(R.string.product_id), getString(R.string.reservation_number)};
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(R.string.reference_number)
+                .setSingleChoiceItems(items, persistentDataManager.getReferenceNumberMode(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface var1, int position) {
+                        checkedId[0] = position;
+                    }
+                }).setPositiveButton(R.string.contin, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                switch (checkedId[0]) {
+                                    case ReferenceType.OFF:
+                                        persistentDataManager.setReferenceNumberMode(ReferenceType.OFF);
+                                        break;
+                                    case ReferenceType.REFERENCE_NUMBER:
+                                        persistentDataManager.setReferenceNumberMode(ReferenceType.REFERENCE_NUMBER);
+                                        break;
+                                    case ReferenceType.INVOICE_ID:
+                                        persistentDataManager.setReferenceNumberMode(ReferenceType.INVOICE_ID);
+                                        break;
+                                    case ReferenceType.PRODUCT_ID:
+                                        persistentDataManager.setReferenceNumberMode(ReferenceType.PRODUCT_ID);
+                                        break;
+                                    case ReferenceType.RESERVATION_NUMBER:
+                                        persistentDataManager.setReferenceNumberMode(ReferenceType.RESERVATION_NUMBER);
+                                        break;
+                                }
 
-        RadioGroup radioGroup = (RadioGroup)view.findViewById(R.id.radio_group);
-        radioGroup.check(getLastSelectedMode(persistentDataManager.getReferenceNumberMode()));
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-
-                if(checkedId == R.id.off_radio_button)
-                    persistentDataManager.setReferenceNumberMode(ReferenceType.OFF);
-                else if (checkedId == R.id.ref_number_radio_button)
-                    persistentDataManager.setReferenceNumberMode(ReferenceType.REFERENCE_NUMBER);
-                else if (checkedId == R.id.invoice_number_radio_button)
-                    persistentDataManager.setReferenceNumberMode( ReferenceType.INVOICE_ID);
-                else if (checkedId == R.id.reservation_number_radio_button)
-                    persistentDataManager.setReferenceNumberMode(ReferenceType.RESERVATION_NUMBER);
-                else if (checkedId == R.id.product_id_radio_button)
-                    persistentDataManager.setReferenceNumberMode(ReferenceType.PRODUCT_ID);
-
-                referenceNumberTypeTV.setText(getReferenceNumberTxt(persistentDataManager.getReferenceNumberMode()));
-
-                dialog.dismiss();
-            }
-        });
+                                referenceNumberTypeTV.setText(getReferenceNumberTxt(persistentDataManager.getReferenceNumberMode()));
+                            }
+                        }
+                ).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                }).create();
 
         dialog.show();
-    }
-
-    private int getLastSelectedMode(int referenceType){
-        if(referenceType == ReferenceType.OFF)
-            return R.id.off_radio_button;
-        else if(referenceType == ReferenceType.REFERENCE_NUMBER)
-            return R.id.ref_number_radio_button;
-        else if(referenceType == ReferenceType.INVOICE_ID)
-            return R.id.invoice_number_radio_button;
-        else if(referenceType == ReferenceType.RESERVATION_NUMBER)
-            return R.id.reservation_number_radio_button;
-        else if(referenceType == ReferenceType.PRODUCT_ID)
-            return R.id.product_id_radio_button;
-        else
-            return R.id.off_radio_button;
     }
 
     private String getReferenceNumberTxt(int type) {
         switch (type) {
             case ReferenceType.OFF:
-                return "Off";
+                return getString(R.string.off);
             case ReferenceType.REFERENCE_NUMBER:
-                return "Reference number";
+                return getString(R.string.reference_number);
             case ReferenceType.INVOICE_ID:
-                return "Invoice number";
+                return getString(R.string.invoice_number);
             case ReferenceType.PRODUCT_ID:
-                return "Product ID";
+                return getString(R.string.product_id);
             case ReferenceType.RESERVATION_NUMBER:
-                return "Reservation number";
+                return getString(R.string.reservation_number);
         }
 
-        return "Off";
+        return getString(R.string.off);
     }
 
     private int customerReceiptTypeToId(int type) {

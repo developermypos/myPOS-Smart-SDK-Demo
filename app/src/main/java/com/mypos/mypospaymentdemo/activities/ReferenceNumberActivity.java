@@ -26,8 +26,8 @@ public class ReferenceNumberActivity extends AppCompatActivity {
         TextView referenceNumberTitle = (TextView) findViewById(R.id.reference_number_title);
         final EditText referenceNumberInput = (EditText) findViewById(R.id.reference_number_et);
 
-        title.setText("Reference number");
-        referenceNumberTitle.setText("Enter: " + getReferenceNumberTxt(PersistentDataManager.getInstance().getReferenceNumberMode()));
+        title.setText(R.string.reference_number);
+        referenceNumberTitle.setText(getString(R.string.enter) + getReferenceNumberTxt(PersistentDataManager.getInstance().getReferenceNumberMode()));
 
         referenceNumberInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -66,17 +66,17 @@ public class ReferenceNumberActivity extends AppCompatActivity {
     private String getReferenceNumberTxt(int type) {
         switch (type) {
             case ReferenceType.OFF:
-                return "Off";
+                return getString(R.string.off);
             case ReferenceType.REFERENCE_NUMBER:
-                return "Reference number";
+                return getString(R.string.reference_number);
             case ReferenceType.INVOICE_ID:
-                return "Invoice number";
+                return getString(R.string.invoice_number);
             case ReferenceType.PRODUCT_ID:
-                return "Product ID";
+                return getString(R.string.product_id);
             case ReferenceType.RESERVATION_NUMBER:
-                return "Reservation number";
+                return getString(R.string.reservation_number);
         }
 
-        return "Off";
+        return getString(R.string.off);
     }
 }
