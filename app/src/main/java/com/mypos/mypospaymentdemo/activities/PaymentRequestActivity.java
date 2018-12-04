@@ -2,6 +2,7 @@ package com.mypos.mypospaymentdemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
@@ -70,5 +71,10 @@ public class PaymentRequestActivity extends AppCompatActivity {
 
             MyPOSAPI.createPaymentRequest(this, paymentRequestBuilder.build(), Utils.PAYMENT_REQUEST_REQUEST_CODE);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

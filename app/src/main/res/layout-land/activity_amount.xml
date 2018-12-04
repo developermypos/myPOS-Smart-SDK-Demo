@@ -154,7 +154,7 @@
         <Button
             android:id                  ="@+id/charge_btn"
             android:layout_width        ="match_parent"
-            android:layout_height       ="80dp"
+            android:layout_height       ="60dp"
             android:textSize            ="20sp"
             android:background          ="@color/main_blue"
             android:text                ="@string/done"

@@ -2,6 +2,7 @@ package com.mypos.mypospaymentdemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -60,5 +61,10 @@ public class PreAuthCompletionActivity extends AppCompatActivity {
             }
             MyPOSAPI.completePreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_COMPLETION_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

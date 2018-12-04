@@ -1,5 +1,6 @@
 package com.mypos.mypospaymentdemo.activities;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,9 +11,15 @@ import com.mypos.mypospaymentdemo.util.KeyboardHandler;
 
 public class PreAuthCodeActivity extends AppCompatActivity {
 
+    private KeyboardHandler keyboardHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    private void init() {
         setContentView(R.layout.activity_amount);
 
         TextView title = (TextView) findViewById(R.id.title_text);
@@ -23,7 +30,12 @@ public class PreAuthCodeActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.code_text)).setHint("******");
 
-        final KeyboardHandler keyboardHandler = new KeyboardHandler(this, findViewById(R.id.root_view), KeyboardHandler.INPUT_TYPE_CODE, true, 6);
+        String lastCode = "";
+        if (keyboardHandler != null)
+            lastCode = keyboardHandler.getCode();
+
+        keyboardHandler = new KeyboardHandler(this, findViewById(R.id.root_view), KeyboardHandler.INPUT_TYPE_CODE, true, 6);
+        keyboardHandler.setCode(lastCode);
 
         findViewById(R.id.charge_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,5 +47,12 @@ public class PreAuthCodeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        init();
     }
 }

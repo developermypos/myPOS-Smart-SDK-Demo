@@ -274,7 +274,7 @@ public class KeyboardHandler implements View.OnClickListener, View.OnLongClickLi
     }
 
     private void setCode00Listener() {
-        if (mCode.length() < 5) {
+        if (mCode.length() < maxChars - 1) {
             mCode += "00";
 
             mCodeTextView.setText(mCode);
@@ -336,6 +336,13 @@ public class KeyboardHandler implements View.OnClickListener, View.OnLongClickLi
         mSumText = mAmount;
 
         mSumTextView.setText(mSumText);
+    }
+
+    public void setCode(String code){
+        mCode = code;
+
+        mCodeTextView.setText(mCode);
+
     }
 
     public String getAmount(){

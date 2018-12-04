@@ -1,6 +1,6 @@
 package com.mypos.mypospaymentdemo.activities;
 
-import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -17,15 +17,26 @@ import com.mypos.smartsdk.ReferenceType;
 
 public class ReferenceNumberActivity extends AppCompatActivity {
 
-    @SuppressLint("SetTextI18n")
+    private EditText referenceNumberInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    private void init() {
         setContentView(R.layout.activity_reference_number);
+
+        String lastRefNumber = "";
+        if (referenceNumberInput != null)
+            lastRefNumber = referenceNumberInput.getText().toString();
 
         TextView title = (TextView) findViewById(R.id.title_text);
         TextView referenceNumberTitle = (TextView) findViewById(R.id.reference_number_title);
-        final EditText referenceNumberInput = (EditText) findViewById(R.id.reference_number_et);
+        referenceNumberInput = (EditText) findViewById(R.id.reference_number_et);
+
+        referenceNumberTitle.setText(lastRefNumber);
 
         title.setText(R.string.reference_number);
         referenceNumberTitle.setText(getString(R.string.enter) + getReferenceNumberTxt(PersistentDataManager.getInstance().getReferenceNumberMode()));
@@ -79,5 +90,12 @@ public class ReferenceNumberActivity extends AppCompatActivity {
         }
 
         return getString(R.string.off);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        init();
     }
 }
