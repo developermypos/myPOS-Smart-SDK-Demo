@@ -1,7 +1,7 @@
 package com.mypos.mypospaymentdemo.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.smartsdk.MyPOSUtil;
 
 public class CredentialActivity extends AppCompatActivity {
 

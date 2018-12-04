@@ -1,5 +1,6 @@
 package com.mypos.mypospaymentdemo.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -11,12 +12,12 @@ import android.widget.Toast;
 
 import com.mypos.mypospaymentdemo.R;
 import com.mypos.mypospaymentdemo.util.PersistentDataManager;
-import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
 public class ReferenceNumberActivity extends AppCompatActivity {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

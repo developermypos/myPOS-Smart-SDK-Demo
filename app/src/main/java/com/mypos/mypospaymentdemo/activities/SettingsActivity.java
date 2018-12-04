@@ -1,15 +1,11 @@
 package com.mypos.mypospaymentdemo.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
