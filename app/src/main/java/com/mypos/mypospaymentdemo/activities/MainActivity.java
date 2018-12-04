@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private int voidDataSTAN = 0;
-    private String voidDataAuthCode = null;
-    private String voidDataDateTime = null;
-
     PrinterResultBroadcastReceiver broadcastReceiver;
 
     @Override
@@ -54,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         // Register the printer result broadcast receiver
         registerReceiver(broadcastReceiver, new IntentFilter(MyPOSUtil.PRINTING_DONE_BROADCAST));
 
-
         setContentView(R.layout.activity_main);
 
         MyPOSAPI.registerPOSInfo(this, new OnPOSInfoListener() {
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(POSInfo info) {
                 TerminalData.posinfo = info;
                 findViewById(R.id.progress_layout).setVisibility(View.GONE);
-                showToast("pos info is received");
+                showToast("POS info is received");
             }
         });
 
@@ -73,11 +68,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (data.getExtras() != null) {
-                Log.e(TAG, bundleAsString(data.getExtras()));
-                showTransactionDataAlert(TransactionData.fromBundle(data.getExtras()));
+                Log.d(TAG, bundleAsString(data.getExtras()));
+
+                TransactionData transactionData = TransactionData.fromBundle(data.getExtras());
+
+                PreferencesManager.getInstance().setLastTransactionStan(transactionData.getStan());
+                PreferencesManager.getInstance().setLastTransactionAuth(transactionData.getAuthCode());
+                PreferencesManager.getInstance().setLastTransactionDateTime(transactionData.getTransactionDateLocal());
+
+                showTransactionDataAlert(transactionData);
             }
         } else {
-            showToast("Transaction is cancelled");
+            showToast("Operation is cancelled");
         }
     }
 
@@ -176,9 +178,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.payment_request_btn:
                 startPaymentRequest();
                 break;
-           /* case R.id.test_void_ex:
-                startVoidEx();
-                break;*/
             case R.id.print_receipt_btn:
                 testPrint();
                 break;
@@ -298,12 +297,12 @@ public class MainActivity extends AppCompatActivity {
      * Starts a void transaction
      */
     private void startVoid() {
-        MyPOSVoid.Builder voidParamas = MyPOSVoid.builder();
-        voidParamas.voidLastTransactionFlag(true);
-        voidParamas.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
-        voidParamas.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
-
-        MyPOSAPI.openVoidActivity(this, voidParamas.build(), Utils.VOID_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
+        displayPaymentOptions(new IOptionsSelected() {
+            @Override
+            public void onReady(int position) {
+                startVoid(position == IOptionsSelected.POSITION_SECOND);
+            }
+        }, new CharSequence[]{getString(R.string.void_last_tran), getString(R.string.void_by_tran_data)});
     }
 
     private void startPreAuth() {
@@ -340,13 +339,36 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Starts a void transaction by transaction data
      */
-    private void startVoidEx() {
-        // Build the void request
+    private void startVoid(boolean isByTranData) {
+        MyPOSVoid.Builder voidParams = MyPOSVoid.builder();
 
-        /*if (voidDataSTAN == 0 || voidDataAuthCode == null || voidDataDateTime == null) {
-            showToast("No last transaction data");
-            return;
-        }*/
+        voidParams.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode())
+                .printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
+
+        if (isByTranData) {
+            int voidStan = 0;
+            try {
+                voidStan = Integer.parseInt(PreferencesManager.getInstance().getLastTransactionStan());
+            } catch (NumberFormatException ignored) {
+            }
+
+            String voidAuthCode = PreferencesManager.getInstance().getLastTransactionAuth();
+            String voidDateTime = PreferencesManager.getInstance().getLastTransactionDateTime();
+
+            if (voidStan == 0 || voidAuthCode == null || voidDateTime == null) {
+                showToast("No last transaction data found");
+                return;
+            }
+
+            voidParams.STAN(voidStan)
+                    .authCode(voidAuthCode)
+                    .dateTime(voidDateTime)
+                    .voidLastTransactionFlag(false);
+        }
+        else
+            voidParams.voidLastTransactionFlag(true);
+
+        MyPOSAPI.openVoidActivity(this, voidParams.build(), Utils.VOID_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
     }
 
     /**

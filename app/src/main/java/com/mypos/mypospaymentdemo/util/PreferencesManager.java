@@ -8,7 +8,7 @@ import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
 public class PreferencesManager {
-    private static final String PREFERENCES_NAME = "settings_data";
+    private static final String PREFERENCES_NAME = "preferences_data";
 
     private static PreferencesManager instance;
 
@@ -83,5 +83,35 @@ public class PreferencesManager {
 
     public int getMerchantReceiptMode() {
         return sharedPreferences.getInt("merchant_receipt_mode", MyPOSUtil.RECEIPT_ON);
+    }
+
+    public void setLastTransactionStan(String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("last_stan", value);
+        editor.apply();
+    }
+
+    public String getLastTransactionStan() {
+        return sharedPreferences.getString("last_stan", "");
+    }
+
+    public void setLastTransactionAuth(String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("last_auth", value);
+        editor.apply();
+    }
+
+    public String getLastTransactionAuth() {
+        return sharedPreferences.getString("last_auth", "");
+    }
+
+    public void setLastTransactionDateTime(String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("last_date_time", value);
+        editor.apply();
+    }
+
+    public String getLastTransactionDateTime() {
+        return sharedPreferences.getString("last_date_time", "");
     }
 }
