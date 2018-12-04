@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
@@ -39,7 +39,7 @@ public class ReferenceNumberActivity extends AppCompatActivity {
         referenceNumberTitle.setText(lastRefNumber);
 
         title.setText(R.string.reference_number);
-        referenceNumberTitle.setText(getString(R.string.enter) + getReferenceNumberTxt(PersistentDataManager.getInstance().getReferenceNumberMode()));
+        referenceNumberTitle.setText(getString(R.string.enter) + getReferenceNumberTxt(PreferencesManager.getInstance().getReferenceNumberMode()));
 
         referenceNumberInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

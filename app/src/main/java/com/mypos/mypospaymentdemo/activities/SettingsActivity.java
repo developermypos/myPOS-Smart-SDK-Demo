@@ -11,60 +11,55 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private SwitchCompat tippingToggle;
-    private SwitchCompat multiOperatorToggle;
-    private SwitchCompat skipConfScreenToggle;
     private TextView referenceNumberTypeTV;
-    private RadioGroup customerReceiptTypes;
-    private RadioGroup merchantReceiptTypes;
 
-    private PersistentDataManager persistentDataManager;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        persistentDataManager = PersistentDataManager.getInstance();
+        preferencesManager = PreferencesManager.getInstance();
 
-        tippingToggle = (SwitchCompat) findViewById(R.id.tipping_toggle);
-        multiOperatorToggle = (SwitchCompat) findViewById(R.id.multi_operator_toggle);
-        skipConfScreenToggle = (SwitchCompat) findViewById(R.id.skip_conf_screen_toggle);
+        SwitchCompat tippingToggle = (SwitchCompat) findViewById(R.id.tipping_toggle);
+        SwitchCompat multiOperatorToggle = (SwitchCompat) findViewById(R.id.multi_operator_toggle);
+        SwitchCompat skipConfScreenToggle = (SwitchCompat) findViewById(R.id.skip_conf_screen_toggle);
         referenceNumberTypeTV = (TextView) findViewById(R.id.reference_number_text);
-        customerReceiptTypes = (RadioGroup) findViewById(R.id.customer_receipt_types);
-        merchantReceiptTypes = (RadioGroup) findViewById(R.id.merchant_receipt_types);
+        RadioGroup customerReceiptTypes = (RadioGroup) findViewById(R.id.customer_receipt_types);
+        RadioGroup merchantReceiptTypes = (RadioGroup) findViewById(R.id.merchant_receipt_types);
 
-        tippingToggle.setChecked(persistentDataManager.getTipEnabled());
-        multiOperatorToggle.setChecked(persistentDataManager.getMultiOperatorModeEnabled());
-        skipConfScreenToggle.setChecked(persistentDataManager.getSkipConfirmationScreenflag());
-        referenceNumberTypeTV.setText(getReferenceNumberTxt(persistentDataManager.getReferenceNumberMode()));
-        customerReceiptTypes.check(customerReceiptTypeToId(persistentDataManager.getCustomerReceiptMode()));
-        merchantReceiptTypes.check(merchantReceiptTypeToId(persistentDataManager.getMerchantReceiptMode()));
+        tippingToggle.setChecked(preferencesManager.getTipEnabled());
+        multiOperatorToggle.setChecked(preferencesManager.getMultiOperatorModeEnabled());
+        skipConfScreenToggle.setChecked(preferencesManager.getSkipConfirmationScreenflag());
+        referenceNumberTypeTV.setText(getReferenceNumberTxt(preferencesManager.getReferenceNumberMode()));
+        customerReceiptTypes.check(customerReceiptTypeToId(preferencesManager.getCustomerReceiptMode()));
+        merchantReceiptTypes.check(merchantReceiptTypeToId(preferencesManager.getMerchantReceiptMode()));
 
         tippingToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                persistentDataManager.setTipEnabled(b);
+                preferencesManager.setTipEnabled(b);
             }
         });
 
         multiOperatorToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                persistentDataManager.setMultiOperatorModeEnabled(b);
+                preferencesManager.setMultiOperatorModeEnabled(b);
             }
         });
 
         skipConfScreenToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                persistentDataManager.setSkipConfirmationScreenflag(b);
+                preferencesManager.setSkipConfirmationScreenflag(b);
             }
         });
 
@@ -78,14 +73,14 @@ public class SettingsActivity extends AppCompatActivity {
         customerReceiptTypes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                persistentDataManager.setCustomerReceiptMode(customerReceiptIdToType(i));
+                preferencesManager.setCustomerReceiptMode(customerReceiptIdToType(i));
             }
         });
 
         merchantReceiptTypes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                persistentDataManager.setMerchantReceiptMode(merchantReceiptIdToType(i));
+                preferencesManager.setMerchantReceiptMode(merchantReceiptIdToType(i));
             }
         });
     }
@@ -96,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
         final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(R.string.reference_number)
-                .setSingleChoiceItems(items, persistentDataManager.getReferenceNumberMode(), new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, preferencesManager.getReferenceNumberMode(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface var1, int position) {
                         checkedId[0] = position;
@@ -106,23 +101,23 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 switch (checkedId[0]) {
                                     case ReferenceType.OFF:
-                                        persistentDataManager.setReferenceNumberMode(ReferenceType.OFF);
+                                        preferencesManager.setReferenceNumberMode(ReferenceType.OFF);
                                         break;
                                     case ReferenceType.REFERENCE_NUMBER:
-                                        persistentDataManager.setReferenceNumberMode(ReferenceType.REFERENCE_NUMBER);
+                                        preferencesManager.setReferenceNumberMode(ReferenceType.REFERENCE_NUMBER);
                                         break;
                                     case ReferenceType.INVOICE_ID:
-                                        persistentDataManager.setReferenceNumberMode(ReferenceType.INVOICE_ID);
+                                        preferencesManager.setReferenceNumberMode(ReferenceType.INVOICE_ID);
                                         break;
                                     case ReferenceType.PRODUCT_ID:
-                                        persistentDataManager.setReferenceNumberMode(ReferenceType.PRODUCT_ID);
+                                        preferencesManager.setReferenceNumberMode(ReferenceType.PRODUCT_ID);
                                         break;
                                     case ReferenceType.RESERVATION_NUMBER:
-                                        persistentDataManager.setReferenceNumberMode(ReferenceType.RESERVATION_NUMBER);
+                                        preferencesManager.setReferenceNumberMode(ReferenceType.RESERVATION_NUMBER);
                                         break;
                                 }
 
-                                referenceNumberTypeTV.setText(getReferenceNumberTxt(persistentDataManager.getReferenceNumberMode()));
+                                referenceNumberTypeTV.setText(getReferenceNumberTxt(preferencesManager.getReferenceNumberMode()));
                             }
                         }
                 ).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

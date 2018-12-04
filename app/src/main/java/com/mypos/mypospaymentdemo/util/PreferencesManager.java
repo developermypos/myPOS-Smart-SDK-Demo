@@ -3,29 +3,24 @@ package com.mypos.mypospaymentdemo.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.mypos.mypospaymentdemo.PosApplication;
 import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
-public class PersistentDataManager {
+public class PreferencesManager {
     private static final String PREFERENCES_NAME = "settings_data";
 
-    private static PersistentDataManager instance;
-
-    public static void setContext(Context context) {
-        PersistentDataManager.context = context;
-    }
-
-    private static Context context;
+    private static PreferencesManager instance;
 
     private SharedPreferences sharedPreferences;
 
-    public PersistentDataManager(Context context) {
-        sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+    public PreferencesManager() {
+        sharedPreferences = PosApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public static PersistentDataManager getInstance() {
+    public static PreferencesManager getInstance() {
         if (instance == null)
-            instance = new PersistentDataManager(context);
+            instance = new PreferencesManager();
 
         return instance;
     }

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
@@ -28,8 +28,8 @@ public class RefundActivity extends AppCompatActivity {
         refundBuilder = MyPOSRefund.builder();
         refundBuilder.foreignTransactionId(UUID.randomUUID().toString());
         refundBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        refundBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        refundBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        refundBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        refundBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
@@ -64,7 +64,7 @@ public class RefundActivity extends AppCompatActivity {
             if (data.hasExtra("product_amount"))
                 refundBuilder.refundAmount(data.getDoubleExtra("product_amount", 0.0D));
 
-            MyPOSAPI.openRefundActivity(this, refundBuilder.build(), Utils.REFUND_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.openRefundActivity(this, refundBuilder.build(), Utils.REFUND_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

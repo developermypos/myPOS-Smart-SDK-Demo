@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSPreauthorizationCancellation;
@@ -25,8 +25,8 @@ public class PreAuthCancellationActivity extends AppCompatActivity {
 
         preauthBuilder = MyPOSPreauthorizationCancellation.builder();
         preauthBuilder.foreignTransactionId(UUID.randomUUID().toString());
-        preauthBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        preauthBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        preauthBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        preauthBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         startActivityForResult(new Intent(this, PreAuthCodeActivity.class), Utils.PREAUTH_CODE_REQUEST_CODE);
     }
@@ -51,7 +51,7 @@ public class PreAuthCancellationActivity extends AppCompatActivity {
             if (data.hasExtra("preauth_code"))
                 preauthBuilder.preauthorizationCode(data.getStringExtra("preauth_code"));
 
-            MyPOSAPI.cancelPreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_CANCELLATION_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.cancelPreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_CANCELLATION_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

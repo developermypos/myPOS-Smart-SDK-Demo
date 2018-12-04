@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
@@ -29,8 +29,8 @@ public class PaymentActivity extends AppCompatActivity {
         paymentBuilder = MyPOSPayment.builder();
         paymentBuilder.foreignTransactionId(UUID.randomUUID().toString());
         paymentBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        paymentBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        paymentBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        paymentBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        paymentBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
@@ -65,7 +65,7 @@ public class PaymentActivity extends AppCompatActivity {
             if (data.hasExtra("product_amount"))
                 paymentBuilder.productAmount(data.getDoubleExtra("product_amount", 0.0D));
 
-            if (PersistentDataManager.getInstance().getTipEnabled())
+            if (PreferencesManager.getInstance().getTipEnabled())
                 startActivityForResult(new Intent(this, TipAmountActivity.class), Utils.TIP_REQUEST_CODE);
             else
                 gotoNextStep(Utils.TIP_REQUEST_CODE, data);
@@ -77,7 +77,7 @@ public class PaymentActivity extends AppCompatActivity {
                 paymentBuilder.tipAmount(data.getDoubleExtra("tip_amount", 0.0D));
             }
 
-            if (PersistentDataManager.getInstance().getMultiOperatorModeEnabled())
+            if (PreferencesManager.getInstance().getMultiOperatorModeEnabled())
                 startActivityForResult(new Intent(this, MultiOperatorCodeActivity.class), Utils.MULTI_OPERATOR_CODE_REQUEST_CODE);
             else
                 gotoNextStep(Utils.MULTI_OPERATOR_CODE_REQUEST_CODE, data);
@@ -87,7 +87,7 @@ public class PaymentActivity extends AppCompatActivity {
             if (data.hasExtra("operator_code"))
                 paymentBuilder.operatorCode(data.getStringExtra("operator_code"));
 
-            if (PersistentDataManager.getInstance().getReferenceNumberMode() != ReferenceType.OFF)
+            if (PreferencesManager.getInstance().getReferenceNumberMode() != ReferenceType.OFF)
                 startActivityForResult(new Intent(this, ReferenceNumberActivity.class), Utils.REFERENCE_NUMBER_REQUEST_CODE);
             else
                 gotoNextStep(Utils.REFERENCE_NUMBER_REQUEST_CODE, data);
@@ -95,9 +95,9 @@ public class PaymentActivity extends AppCompatActivity {
         else
         if (prevRequestCode == Utils.REFERENCE_NUMBER_REQUEST_CODE) {
             if (data.hasExtra("reference_number")) {
-                paymentBuilder.reference(data.getStringExtra("reference_number"), PersistentDataManager.getInstance().getReferenceNumberMode());
+                paymentBuilder.reference(data.getStringExtra("reference_number"), PreferencesManager.getInstance().getReferenceNumberMode());
             }
-            MyPOSAPI.openPaymentActivity(this, paymentBuilder.build(), Utils.PAYMENT_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.openPaymentActivity(this, paymentBuilder.build(), Utils.PAYMENT_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

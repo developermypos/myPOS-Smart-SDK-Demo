@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
@@ -28,8 +28,8 @@ public class PreAuthCompletionActivity extends AppCompatActivity {
         preauthBuilder = MyPOSPreauthorizationCompletion.builder();
         preauthBuilder.foreignTransactionId(UUID.randomUUID().toString());
         preauthBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        preauthBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        preauthBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        preauthBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        preauthBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         startActivityForResult(new Intent(this, PreAuthCodeActivity.class), Utils.PREAUTH_CODE_REQUEST_CODE);
     }
@@ -59,7 +59,7 @@ public class PreAuthCompletionActivity extends AppCompatActivity {
             if (data.hasExtra("product_amount")) {
                 preauthBuilder.productAmount(data.getDoubleExtra("product_amount", 0.0D));
             }
-            MyPOSAPI.completePreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_COMPLETION_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.completePreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_COMPLETION_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

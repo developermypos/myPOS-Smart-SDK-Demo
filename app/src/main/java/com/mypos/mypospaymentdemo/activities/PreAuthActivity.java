@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
@@ -29,8 +29,8 @@ public class PreAuthActivity extends AppCompatActivity {
         preauthBuilder = MyPOSPreauthorization.builder();
         preauthBuilder.foreignTransactionId(UUID.randomUUID().toString());
         preauthBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        preauthBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        preauthBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        preauthBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        preauthBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
@@ -63,7 +63,7 @@ public class PreAuthActivity extends AppCompatActivity {
             if (data.hasExtra("product_amount"))
                 preauthBuilder.productAmount(data.getDoubleExtra("product_amount", 0.0D));
 
-            if (PersistentDataManager.getInstance().getReferenceNumberMode() != ReferenceType.OFF)
+            if (PreferencesManager.getInstance().getReferenceNumberMode() != ReferenceType.OFF)
                 startActivityForResult(new Intent(this, ReferenceNumberActivity.class), Utils.REFERENCE_NUMBER_REQUEST_CODE);
             else
                 gotoNextStep(Utils.REFERENCE_NUMBER_REQUEST_CODE, data);
@@ -71,9 +71,9 @@ public class PreAuthActivity extends AppCompatActivity {
         else
         if (prevRequestCode == Utils.REFERENCE_NUMBER_REQUEST_CODE) {
             if (data.hasExtra("reference_number")) {
-                preauthBuilder.reference(data.getStringExtra("reference_number"), PersistentDataManager.getInstance().getReferenceNumberMode());
+                preauthBuilder.reference(data.getStringExtra("reference_number"), PreferencesManager.getInstance().getReferenceNumberMode());
             }
-            MyPOSAPI.createPreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.createPreauthorization(this, preauthBuilder.build(), Utils.PREAUTH_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

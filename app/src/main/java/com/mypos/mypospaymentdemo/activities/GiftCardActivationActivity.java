@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
@@ -28,8 +28,8 @@ public class GiftCardActivationActivity extends AppCompatActivity {
         mBuilder = MyPOSGiftCardActivation.builder();
         mBuilder.foreignTransactionId(UUID.randomUUID().toString());
         mBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        mBuilder.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        mBuilder.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        mBuilder.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        mBuilder.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
         startActivityForResult(new Intent(this, AmountActivity.class), Utils.AMOUNT_REQUEST_CODE);
     }
@@ -56,7 +56,7 @@ public class GiftCardActivationActivity extends AppCompatActivity {
             if (data.hasExtra("product_amount"))
                 mBuilder.productAmount(data.getDoubleExtra("product_amount", 0.0D));
 
-            MyPOSAPI.openGiftCardActivationActivity(this, mBuilder.build(), Utils.GIFTCARD_ACTIVATION_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+            MyPOSAPI.openGiftCardActivationActivity(this, mBuilder.build(), Utils.GIFTCARD_ACTIVATION_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
         }
     }
 

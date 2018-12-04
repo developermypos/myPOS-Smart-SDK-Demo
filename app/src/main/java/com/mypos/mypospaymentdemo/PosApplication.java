@@ -1,12 +1,17 @@
 package com.mypos.mypospaymentdemo;
 
 import android.app.Application;
-
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import android.content.Context;
 
 public class PosApplication extends Application {
+    private static Context context;
+
     public void onCreate() {
         super.onCreate();
-        PersistentDataManager.setContext(this);
+        context = this;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

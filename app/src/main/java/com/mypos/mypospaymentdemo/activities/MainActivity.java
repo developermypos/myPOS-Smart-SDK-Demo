@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.mypos.mypospaymentdemo.PrinterResultBroadcastReceiver;
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.util.PersistentDataManager;
+import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.TransactionData;
 import com.mypos.mypospaymentdemo.util.Utils;
@@ -300,10 +300,10 @@ public class MainActivity extends AppCompatActivity {
     private void startVoid() {
         MyPOSVoid.Builder voidParamas = MyPOSVoid.builder();
         voidParamas.voidLastTransactionFlag(true);
-        voidParamas.printCustomerReceipt(PersistentDataManager.getInstance().getCustomerReceiptMode());
-        voidParamas.printMerchantReceipt(PersistentDataManager.getInstance().getMerchantReceiptMode());
+        voidParamas.printCustomerReceipt(PreferencesManager.getInstance().getCustomerReceiptMode());
+        voidParamas.printMerchantReceipt(PreferencesManager.getInstance().getMerchantReceiptMode());
 
-        MyPOSAPI.openVoidActivity(this, voidParamas.build(), Utils.VOID_REQUEST_CODE, PersistentDataManager.getInstance().getSkipConfirmationScreenflag());
+        MyPOSAPI.openVoidActivity(this, voidParamas.build(), Utils.VOID_REQUEST_CODE, PreferencesManager.getInstance().getSkipConfirmationScreenflag());
     }
 
     private void startPreAuth() {
