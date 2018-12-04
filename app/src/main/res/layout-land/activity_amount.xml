@@ -79,7 +79,7 @@
                             android:maxLines                ="1"
                             android:maxLength               ="13"
                             android:text                    ="0.00"
-                            android:textSize                ="60sp" />
+                            android:textSize                ="@dimen/amount_text_size" />
 
                         <TextView
                             android:id                      ="@+id/currency_text"
@@ -87,7 +87,7 @@
                             android:layout_height           ="wrap_content"
                             android:layout_marginLeft       ="10dip"
                             android:layout_gravity          ="bottom"
-                            android:textSize                ="40sp"
+                            android:textSize                ="@dimen/currency_text_size"
                             android:paddingBottom           ="5dip"/>
 
                     </LinearLayout>
