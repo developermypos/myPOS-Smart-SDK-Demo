@@ -1,6 +1,7 @@
 package com.mypos.mypospaymentdemo.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.mypos.mypospaymentdemo.PrinterResultBroadcastReceiver;
 import com.mypos.mypospaymentdemo.R;
 import com.mypos.mypospaymentdemo.util.PersistentDataManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
+import com.mypos.mypospaymentdemo.util.TransactionData;
 import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSUtil;
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(POSInfo info) {
                 TerminalData.posinfo = info;
                 findViewById(R.id.progress_layout).setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this, "pos info is received", Toast.LENGTH_SHORT).show();
+                showToast("pos info is received");
             }
         });
 
@@ -67,16 +70,83 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n") // Suppressing i18n warnings since this is just a demo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int status = data.getIntExtra("status", -1);
-        if (status == Utils.TRANSACTION_STATUS_SUCCESS) {
+        if (resultCode == Activity.RESULT_OK) {
             if (data.getExtras() != null) {
-                Intent i = new Intent(this, TransactionDataActivity.class);
-                i.putExtras(data.getExtras());
-                startActivityForResult(i, Utils.TRANSACTION_DATA_REQUEST_CODE);
+                Log.e(TAG, bundleAsString(data.getExtras()));
+                showTransactionDataAlert(TransactionData.fromBundle(data.getExtras()));
             }
         } else {
-            Toast.makeText(MainActivity.this, "Transaction is cancelled", Toast.LENGTH_SHORT).show();
+            showToast("Transaction is cancelled");
         }
+    }
+
+    private void showTransactionDataAlert(TransactionData transactionData){
+        String message = "Auth code: " + transactionData.getAuthCode() + "\n";
+        message += "Transaction Local Date: " + transactionData.getTransactionDateLocal() + "\n";
+        message += "RRN: " + transactionData.getRRN() + "\n";
+        message += "Amount: " + transactionData.getAmount() + "\n";
+        message += "Currency: " + transactionData.getCurrency() + "\n";
+        message += "Terminal ID: " + transactionData.getTerminalID() + "\n";
+        message += "Merchant ID: " + transactionData.getMerchantID() + "\n";
+        message += "Merchant Name: " + transactionData.getMerchantName() + "\n";
+        message += "Merchant Address Line 1: " + transactionData.getMerchantAddressLine1() + "\n";
+        message += "Merchant Address Line 2: " + transactionData.getMerchantAddressLine2() + "\n";
+        message += "PAN Masked: " + transactionData.getPANMasked() + "\n";
+        message += "Emboss Name: " + transactionData.getEmbossName() + "\n";
+        message += "AID: " + transactionData.getAID() + "\n";
+        message += "AID Name: " + transactionData.getAIDName() + "\n";
+        message += "STAN: " + transactionData.getStan() + "\n";
+        message += "Is Signature Required: " + transactionData.isSignatureRequired() +"\n";
+        message += "Application pref name: " + transactionData.getApplicationPrefName() +"\n";
+        message += "CVM: " + transactionData.getCVM() +"\n";
+        message += "card entry mode: " + transactionData.getCardEntryMode() +"\n";
+
+        if (!transactionData.getPreAuthCode().isEmpty())
+            message += "PreAuth Code: " + transactionData.getPreAuthCode() + "\n";
+
+        if (!transactionData.getTipAmount().isEmpty())
+            message += "Tip amount: " + transactionData.getTipAmount() + "\n";
+
+        if (!transactionData.getOperatorCode().isEmpty())
+            message += "Operator code: " + transactionData.getOperatorCode() + "\n";
+
+        if (transactionData.getIsDccUsed()) {
+            message += "DCC Currency: " + transactionData.getDccCurrency() + "\n";
+            message += "DCC Amount: " + transactionData.getDccAmount() + "\n";
+            message += "DCC Exchange rate: " + transactionData.getDccCardExchangeRate() + "\n";
+        }
+
+        final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Transaction data");
+        alertBuilder.setPositiveButton("OK", null);
+        alertBuilder.setMessage(message);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog alertDialog = alertBuilder.create();
+                alertDialog.show();
+            }
+        });
+    }
+
+    private String bundleAsString(Bundle data) {
+        return bundleAsString(data, false);
+    }
+
+    private String bundleAsString(Bundle data, boolean indent) {
+        String retString = "";
+        if (data != null) {
+            for (String s : data.keySet()) {
+                Object extra = data.get(s);
+                if (extra instanceof Bundle) {
+                    retString += "\n\tBundle \"" + s + "\":\n" + bundleAsString((Bundle) extra, true);
+                } else {
+                    retString += (String.format("%s%s => %s\n", indent ? "\t\t" : "\t", s, extra));
+                }
+            }
+        }
+        return retString;
     }
 
     public void onClick(View view) {
@@ -194,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
                        break;
                }
-               startActivity(i);
+               startActivityForResult(i, Utils.PAYMENT_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
     }
@@ -218,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
                         break;
                 }
-                startActivity(i);
+                startActivityForResult(i, Utils.REfUND_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
     }
@@ -249,20 +319,20 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                startActivity(i);
+                startActivityForResult(i, Utils.PREAUTH_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction)});
     }
 
     private void startPreAuthCompletion() {
         Intent i = new Intent(MainActivity.this, PreAuthCompletionActivity.class);
-        startActivity(i);
+        startActivityForResult(i, Utils.PREAUTH_COMPLETION_ACTIVITY_REQUEST_CODE);
     }
 
 
     private void startPreAuthCancellation() {
         Intent i = new Intent(MainActivity.this, PreAuthCancellationActivity.class);
-        startActivity(i);
+        startActivityForResult(i, Utils.PREAUTH_CANCELLATION_ACTIVITY_REQUEST_CODE);
     }
 
 
@@ -282,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
      * Starts a payment request transaction
      */
     private void startPaymentRequest() {
-        startActivity(new Intent(MainActivity.this, PaymentRequestActivity.class));
+        startActivityForResult(new Intent(MainActivity.this, PaymentRequestActivity.class), Utils.PAYMENT_REQUEST_ACTIVITY_REQUEST_CODE);
     }
 
     private void startGiftCards() {
@@ -291,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReady(int position) {
                 switch (position) {
                     case IOptionsSelected.POSITION_FIRST:
-                        startActivity(new Intent(MainActivity.this, GiftCardActivationActivity.class));
+                        startActivityForResult(new Intent(MainActivity.this, GiftCardActivationActivity.class), Utils.GIFTCARD_ACTIVATION_ACTIVITY_REQUEST_CODE);
                         break;
                     case IOptionsSelected.POSITION_SECOND:
                         MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), Utils.GIFTCARD_DEACTIVATION_REQUEST_CODE);

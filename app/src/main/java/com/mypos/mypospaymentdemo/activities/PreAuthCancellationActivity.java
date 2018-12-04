@@ -69,18 +69,8 @@ public class PreAuthCancellationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Utils.PREAUTH_CANCELLATION_REQUEST_CODE) {
-            int status = data.getIntExtra("status", -1);
-            if (status == Utils.TRANSACTION_STATUS_SUCCESS) {
-                if (data.getExtras() != null) {
-                    Intent i = new Intent(this, TransactionDataActivity.class);
-                    i.putExtras(data.getExtras());
-                    startActivityForResult(i, Utils.TRANSACTION_DATA_REQUEST_CODE);
-                }
-            } else {
-                Toast.makeText(PreAuthCancellationActivity.this, "Transaction is cancelled", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+            setResult(resultCode, data);
+            finish();
         } else if (resultCode == Activity.RESULT_OK) {
             gotoNextStep(requestCode, data);
         } else {

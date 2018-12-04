@@ -31,7 +31,6 @@
         <activity android:name=".activities.PreAuthCancellationActivity" />
         <activity android:name=".activities.PaymentRequestActivity" />
         <activity android:name=".activities.PreAuthCodeActivity" />
-        <activity android:name=".activities.TransactionDataActivity" />
         <activity android:name=".activities.CredentialActivity"></activity>
     </application>
 
