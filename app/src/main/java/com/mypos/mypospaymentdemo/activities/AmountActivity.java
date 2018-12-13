@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.mypos.mypospaymentdemo.R;
 import com.mypos.mypospaymentdemo.util.KeyboardHandler;
 import com.mypos.mypospaymentdemo.util.TerminalData;
+import com.mypos.smartsdk.Currency;
 
 public class AmountActivity extends AppCompatActivity {
 
@@ -29,11 +30,13 @@ public class AmountActivity extends AppCompatActivity {
         title.setText(R.string.amount);
         currency.setText(TerminalData.posinfo.getCurrencyName());
 
-        String lastAmount = "0.00";
+        boolean isDecimalAllowed = !Currency.ISK.name().equalsIgnoreCase(TerminalData.posinfo.getCurrencyName())             ;
+
+        String lastAmount = isDecimalAllowed ? "0.00" : "0";
         if (keyboardHandler != null)
             lastAmount = keyboardHandler.getAmount();
 
-        keyboardHandler = new KeyboardHandler(this, findViewById(R.id.root_view), KeyboardHandler.INPUT_TYPE_AMOUNT, true, 8);
+        keyboardHandler = new KeyboardHandler(this, findViewById(R.id.root_view), KeyboardHandler.INPUT_TYPE_AMOUNT, isDecimalAllowed, 8);
         keyboardHandler.setAmount(lastAmount);
 
         findViewById(R.id.charge_btn).setOnClickListener(new View.OnClickListener() {
