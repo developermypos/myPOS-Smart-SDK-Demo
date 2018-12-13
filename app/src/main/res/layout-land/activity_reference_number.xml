@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id              ="@+id/root_view"
+    xmlns:android           ="http://schemas.android.com/apk/res/android"
+    android:layout_width    ="match_parent"
+    android:layout_height   ="match_parent"
+    android:background      ="@color/main_light_blue">
+
+    <LinearLayout
+        android:layout_width    ="match_parent"
+        android:layout_height   ="match_parent"
+        android:orientation     ="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id                  ="@+id/toolbar"
+            android:layout_height       ="56dp"
+            android:layout_width        ="match_parent"
+            android:background          ="@color/main_blue">
+
+            <RelativeLayout
+                android:id              ="@+id/title_layout"
+                android:layout_width    ="match_parent"
+                android:layout_height   ="56dp"
+                android:layout_gravity  ="center_vertical|fill_horizontal" >
+
+                <TextView
+                    android:id                      ="@+id/title_text"
+                    android:layout_width            ="wrap_content"
+                    android:layout_height           ="wrap_content"
+                    android:textColor               ="@color/main_white"
+                    android:textStyle               ="bold"
+                    android:textSize                ="20sp"
+                    android:layout_centerInParent   ="true"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width    ="match_parent"
+            android:layout_height   ="0dip"
+            android:layout_weight   ="1"
+            android:orientation     ="horizontal">
+
+            <LinearLayout
+                android:id              ="@+id/currency_layout"
+                android:layout_width    ="0dip"
+                android:layout_height   ="match_parent"
+                android:gravity         ="center"
+                android:orientation     ="vertical"
+                android:layout_weight   ="50">
+
+                <TextView
+                    android:id              ="@+id/reference_number_title"
+                    android:layout_width    ="wrap_content"
+                    android:layout_height   ="wrap_content"
+                    android:text            ="@string/reference_number_title"
+                    android:textSize        ="22sp"
+                    android:textAllCaps     ="true"/>
+
+                <EditText
+                    android:id="@+id/reference_number_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength       ="20"
+                    android:inputType       ="textFilter"
+                    android:hint            ="**********"
+                    android:layout_marginTop="10dp"
+                    android:textSize        ="20sp"
+                    android:gravity         ="center" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id                  ="@+id/charge_btn"
+            android:layout_width        ="match_parent"
+            android:layout_height       ="60dp"
+            android:textSize            ="20sp"
+            android:background          ="@color/main_blue"
+            android:text                ="@string/done"
+            android:textColor           ="@color/main_white" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id              ="@+id/progress_layout"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="match_parent"
+        android:background      ="#77000000"
+        android:clickable       ="true"
+        android:visibility      ="gone">
+
+        <ProgressBar
+            android:layout_width            ="wrap_content"
+            android:layout_height           ="wrap_content"
+            android:layout_centerInParent   ="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
