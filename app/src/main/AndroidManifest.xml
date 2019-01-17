@@ -20,15 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.AmountActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".activities.PaymentActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.TipAmountActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.MultiOperatorCodeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.ReferenceNumberActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".activities.GiftCardActivationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
@@ -41,10 +33,6 @@
         <activity android:name=".activities.PreAuthCancellationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".activities.PaymentRequestActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.PreAuthCodeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.CredentialActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 

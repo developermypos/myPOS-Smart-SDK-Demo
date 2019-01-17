@@ -264,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
                        break;
                }
+               i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
                startActivityForResult(i, Utils.PAYMENT_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});

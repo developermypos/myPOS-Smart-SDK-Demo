@@ -114,4 +114,81 @@ public class PreferencesManager {
     public String getLastTransactionDateTime() {
         return sharedPreferences.getString("last_date_time", "");
     }
+
+    public IPreferences getPreferences() {
+        Preferences preferences = new Preferences();
+
+        preferences.setTipEnabled(getTipEnabled());
+        preferences.setMultiOperatorModeEnabled(getMultiOperatorModeEnabled());
+        preferences.setSkipConfirmationScreenflag(getSkipConfirmationScreenflag());
+        preferences.setReferenceNumberMode(getReferenceNumberMode());
+        preferences.setCustomerReceiptMode(getCustomerReceiptMode());
+        preferences.setMerchantReceiptMode(getMerchantReceiptMode());
+
+        return preferences;
+    }
+
+    private static class Preferences implements IPreferences {
+
+        private boolean tipEnabled;
+        private boolean multiOperatorModeEnabled;
+        private boolean skipConfirmationScreenFlag;
+        private int referenceNumberMode;
+        private int customerReceiptMode;
+        private int merchantReceiptMode;
+
+        public void setTipEnabled(boolean value) {
+            tipEnabled = value;
+        }
+
+        @Override
+        public boolean getTipEnabled() {
+            return tipEnabled;
+        }
+
+        public void setMultiOperatorModeEnabled(boolean value) {
+            multiOperatorModeEnabled = value;
+        }
+
+        @Override
+        public boolean getMultiOperatorModeEnabled() {
+            return multiOperatorModeEnabled;
+        }
+
+        public void setSkipConfirmationScreenflag(boolean value) {
+            skipConfirmationScreenFlag = value;
+        }
+
+        @Override
+        public boolean getSkipConfirmationScreenflag() {
+            return skipConfirmationScreenFlag;
+        }
+
+        public void setReferenceNumberMode(int value) {
+            referenceNumberMode = value;
+        }
+
+        @Override
+        public int getReferenceNumberMode() {
+            return referenceNumberMode;
+        }
+
+        public void setCustomerReceiptMode(int value) {
+            customerReceiptMode = value;
+        }
+
+        @Override
+        public int getCustomerReceiptMode() {
+            return customerReceiptMode;
+        }
+
+        public void setMerchantReceiptMode(int value) {
+            merchantReceiptMode = value;
+        }
+
+        @Override
+        public int getMerchantReceiptMode() {
+            return merchantReceiptMode;
+        }
+    }
 }

@@ -1,5 +1,8 @@
 package com.mypos.mypospaymentdemo.util;
 
+import com.mypos.smartsdk.MyPOSUtil;
+import com.mypos.smartsdk.ReferenceType;
+
 public class Utils {
 
     public static final int PAYMENT_ACTIVITY_REQUEST_CODE = 1;
@@ -31,4 +34,38 @@ public class Utils {
     public static final int TRANSACTION_SPEC_REGULAR = 0;
     public static final int TRANSACTION_SPEC_MOTO = 1;
     public static final int TRANSACTION_SPEC_GIFTCARD = 2;
+
+    public static IPreferences getDefaultPreferences() {
+        return new IPreferences() {
+            @Override
+            public boolean getTipEnabled() {
+                return false;
+            }
+
+            @Override
+            public boolean getMultiOperatorModeEnabled() {
+                return false;
+            }
+
+            @Override
+            public boolean getSkipConfirmationScreenflag() {
+                return false;
+            }
+
+            @Override
+            public int getReferenceNumberMode() {
+                return ReferenceType.OFF;
+            }
+
+            @Override
+            public int getCustomerReceiptMode() {
+                return MyPOSUtil.RECEIPT_ON;
+            }
+
+            @Override
+            public int getMerchantReceiptMode() {
+                return MyPOSUtil.RECEIPT_ON;
+            }
+        };
+    }
 }
