@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
                         break;
                 }
+                i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
                 startActivityForResult(i, Utils.REfUND_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
@@ -319,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_MOTO);
                         break;
                 }
-
+                i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
                 startActivityForResult(i, Utils.PREAUTH_ACTIVITY_REQUEST_CODE);
             }
         }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction)});
@@ -327,12 +328,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPreAuthCompletion() {
         Intent i = new Intent(MainActivity.this, PreAuthCompletionActivity.class);
+        i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
         startActivityForResult(i, Utils.PREAUTH_COMPLETION_ACTIVITY_REQUEST_CODE);
     }
 
 
     private void startPreAuthCancellation() {
         Intent i = new Intent(MainActivity.this, PreAuthCancellationActivity.class);
+        i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
         startActivityForResult(i, Utils.PREAUTH_CANCELLATION_ACTIVITY_REQUEST_CODE);
     }
 
@@ -385,7 +388,9 @@ public class MainActivity extends AppCompatActivity {
             public void onReady(int position) {
                 switch (position) {
                     case IOptionsSelected.POSITION_FIRST:
-                        startActivityForResult(new Intent(MainActivity.this, GiftCardActivationActivity.class), Utils.GIFTCARD_ACTIVATION_ACTIVITY_REQUEST_CODE);
+                        Intent i = new Intent(MainActivity.this, GiftCardActivationActivity.class);
+                        i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
+                        startActivityForResult(i, Utils.GIFTCARD_ACTIVATION_ACTIVITY_REQUEST_CODE);
                         break;
                     case IOptionsSelected.POSITION_SECOND:
                         MyPOSAPI.openGiftCardDeactivationActivity(MainActivity.this, UUID.randomUUID().toString(), Utils.GIFTCARD_DEACTIVATION_REQUEST_CODE);
