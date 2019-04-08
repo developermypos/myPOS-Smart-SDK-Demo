@@ -58,7 +58,7 @@ public class PreAuthCancellationActivity extends AppCompatActivity implements IF
     }
 
     private void gotoNextStep(int prevRequestCode, Intent data) {
-        if (prevRequestCode == Utils.PREAUTH_CODE_REQUEST_CODE) {
+        if (prevRequestCode == Utils.AMOUNT_REQUEST_CODE) {
             if (data.hasExtra("preauth_code"))
                 preauthBuilder.preauthorizationCode(data.getStringExtra("preauth_code"));
 
