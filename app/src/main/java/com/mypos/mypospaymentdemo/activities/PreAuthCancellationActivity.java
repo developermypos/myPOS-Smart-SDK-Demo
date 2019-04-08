@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mypos.mypospaymentdemo.R;
-import com.mypos.mypospaymentdemo.fragments.AmountFragment;
+import com.mypos.mypospaymentdemo.fragments.PreAuthCodeFragment;
 import com.mypos.mypospaymentdemo.util.IFragmentResult;
 import com.mypos.mypospaymentdemo.util.IPreferences;
 import com.mypos.mypospaymentdemo.util.Utils;
@@ -38,7 +38,7 @@ public class PreAuthCancellationActivity extends AppCompatActivity implements IF
         preauthBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
         preauthBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
 
-        addFragment(new AmountFragment(Utils.AMOUNT_REQUEST_CODE, this));
+        addFragment(new PreAuthCodeFragment(Utils.PREAUTH_CODE_REQUEST_CODE, this));
     }
 
     private void addFragment(Fragment fragment) {
@@ -58,7 +58,7 @@ public class PreAuthCancellationActivity extends AppCompatActivity implements IF
     }
 
     private void gotoNextStep(int prevRequestCode, Intent data) {
-        if (prevRequestCode == Utils.AMOUNT_REQUEST_CODE) {
+        if (prevRequestCode == Utils.PREAUTH_CODE_REQUEST_CODE) {
             if (data.hasExtra("preauth_code"))
                 preauthBuilder.preauthorizationCode(data.getStringExtra("preauth_code"));
 
