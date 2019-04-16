@@ -38,7 +38,7 @@ public class CredentialFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {frameLayout = new FrameLayout(getActivity());
-        View view = inflater.inflate(R.layout.fragment_amount, null);
+        View view = inflater.inflate(R.layout.fragment_reference_number, null);
         frameLayout.addView(view);
         return frameLayout;
     }
