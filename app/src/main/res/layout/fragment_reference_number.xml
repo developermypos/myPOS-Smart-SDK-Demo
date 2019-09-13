@@ -57,7 +57,7 @@
                 android:id="@+id/reference_number_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength       ="20"
+                android:maxLength       ="50"
                 android:inputType       ="textFilter"
                 android:hint            ="**********"
                 android:layout_marginTop="10dp"
