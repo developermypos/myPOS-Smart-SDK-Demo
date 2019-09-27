@@ -156,7 +156,6 @@
                     android:onClick         ="onClick"
                     android:background      ="@drawable/button_selector"/>
 
-
                 <Button
                     android:id              ="@+id/sam_btn"
                     android:layout_width    ="200dip"
@@ -165,6 +164,17 @@
                     android:layout_marginTop="8dip"
                     android:layout_centerHorizontal="true"
                     android:text            ="@string/test_sam"
+                    android:onClick         ="onClick"
+                    android:background      ="@drawable/button_selector"/>
+
+                <Button
+                    android:id              ="@+id/scanner_btn"
+                    android:layout_width    ="200dip"
+                    android:layout_height   ="wrap_content"
+                    android:layout_below    ="@+id/sam_btn"
+                    android:layout_marginTop="8dip"
+                    android:layout_centerHorizontal="true"
+                    android:text            ="@string/open_scanner"
                     android:onClick         ="onClick"
                     android:background      ="@drawable/button_selector"/>
 

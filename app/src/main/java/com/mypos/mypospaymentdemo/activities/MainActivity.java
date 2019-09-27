@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.mypos.mypospaymentdemo.PrinterResultBroadcastReceiver;
 import com.mypos.mypospaymentdemo.R;
+import com.mypos.mypospaymentdemo.ScannerResultBroadcastReceiver;
 import com.mypos.mypospaymentdemo.util.PreferencesManager;
 import com.mypos.mypospaymentdemo.util.TerminalData;
 import com.mypos.mypospaymentdemo.util.TransactionData;
@@ -39,16 +40,19 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    PrinterResultBroadcastReceiver broadcastReceiver;
+    PrinterResultBroadcastReceiver printerBroadcastReceiver;
+    ScannerResultBroadcastReceiver scannerBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        broadcastReceiver = new PrinterResultBroadcastReceiver();
+        printerBroadcastReceiver = new PrinterResultBroadcastReceiver();
+        scannerBroadcastReceiver = new ScannerResultBroadcastReceiver();
 
-        // Register the printer result broadcast receiver
-        registerReceiver(broadcastReceiver, new IntentFilter(MyPOSUtil.PRINTING_DONE_BROADCAST));
+        // Register the printer result broadcast receivers
+        registerReceiver(printerBroadcastReceiver, new IntentFilter(MyPOSUtil.PRINTING_DONE_BROADCAST));
+        registerReceiver(scannerBroadcastReceiver, new IntentFilter(MyPOSUtil.SCANNER_RESULT_BROADCAST));
 
         setContentView(R.layout.activity_main);
 
@@ -189,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.giftcard_btn:
                 startGiftCards();
+                break;
+            case R.id.scanner_btn:
+                sendBroadcast(new Intent(MyPOSUtil.SCANNER_BROADCAST));
                 break;
         }
     }
@@ -499,6 +506,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(printerBroadcastReceiver);
+        unregisterReceiver(scannerBroadcastReceiver);
     }
 }

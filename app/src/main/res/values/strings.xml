@@ -16,6 +16,8 @@
     <string name="reprint_receipt">Reprint Receipt</string>
     <string name="print_text">Print Text</string>
     <string name="test_sam">Test SAM</string>
+    <string name="open_scanner">Open Scanner</string>
+    <string name="open_cash">Open Cash drawer</string>
 
     <string name="transaction_type">Transaction type</string>
 
