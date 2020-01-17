@@ -15,3 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepclassmembers class com.mypos.smartsdk.** { *; }
