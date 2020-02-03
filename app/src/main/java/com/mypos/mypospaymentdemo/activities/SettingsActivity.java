@@ -31,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
         SwitchCompat tippingToggle = (SwitchCompat) findViewById(R.id.tipping_toggle);
         SwitchCompat multiOperatorToggle = (SwitchCompat) findViewById(R.id.multi_operator_toggle);
         SwitchCompat skipConfScreenToggle = (SwitchCompat) findViewById(R.id.skip_conf_screen_toggle);
+        SwitchCompat mcSonicToggle = (SwitchCompat) findViewById(R.id.mc_sonic_toggle);
         referenceNumberTypeTV = (TextView) findViewById(R.id.reference_number_text);
         RadioGroup customerReceiptTypes = (RadioGroup) findViewById(R.id.customer_receipt_types);
         RadioGroup merchantReceiptTypes = (RadioGroup) findViewById(R.id.merchant_receipt_types);
@@ -38,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         tippingToggle.setChecked(preferencesManager.getTipEnabled());
         multiOperatorToggle.setChecked(preferencesManager.getMultiOperatorModeEnabled());
         skipConfScreenToggle.setChecked(preferencesManager.getSkipConfirmationScreenflag());
+        mcSonicToggle.setChecked(preferencesManager.getMCSonicEnabled());
         referenceNumberTypeTV.setText(getReferenceNumberTxt(preferencesManager.getReferenceNumberMode()));
         customerReceiptTypes.check(customerReceiptTypeToId(preferencesManager.getCustomerReceiptMode()));
         merchantReceiptTypes.check(merchantReceiptTypeToId(preferencesManager.getMerchantReceiptMode()));
@@ -60,6 +62,13 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferencesManager.setSkipConfirmationScreenflag(b);
+            }
+        });
+
+        mcSonicToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferencesManager.setMCSonicEnabled(b);
             }
         });
 

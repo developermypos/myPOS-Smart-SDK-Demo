@@ -55,6 +55,16 @@ public class PreferencesManager {
         return sharedPreferences.getBoolean("skip_conf_screen_enabled", false);
     }
 
+    public void setMCSonicEnabled(boolean value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("mc_sonic_enabled", value);
+        editor.apply();
+    }
+
+    public boolean getMCSonicEnabled() {
+        return sharedPreferences.getBoolean("mc_sonic_enabled", true);
+    }
+
     public void setReferenceNumberMode(int value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("reference_number_mode", value);
@@ -121,6 +131,7 @@ public class PreferencesManager {
         preferences.setTipEnabled(getTipEnabled());
         preferences.setMultiOperatorModeEnabled(getMultiOperatorModeEnabled());
         preferences.setSkipConfirmationScreenflag(getSkipConfirmationScreenflag());
+        preferences.setMCSonicEnabled(getMCSonicEnabled());
         preferences.setReferenceNumberMode(getReferenceNumberMode());
         preferences.setCustomerReceiptMode(getCustomerReceiptMode());
         preferences.setMerchantReceiptMode(getMerchantReceiptMode());
@@ -133,6 +144,7 @@ public class PreferencesManager {
         private boolean tipEnabled;
         private boolean multiOperatorModeEnabled;
         private boolean skipConfirmationScreenFlag;
+        private boolean mcSonicEnabled;
         private int referenceNumberMode;
         private int customerReceiptMode;
         private int merchantReceiptMode;
@@ -162,6 +174,15 @@ public class PreferencesManager {
         @Override
         public boolean getSkipConfirmationScreenflag() {
             return skipConfirmationScreenFlag;
+        }
+
+        public void setMCSonicEnabled(boolean value) {
+            mcSonicEnabled = value;
+        }
+
+        @Override
+        public boolean getMCSonicEnabled() {
+            return mcSonicEnabled;
         }
 
         public void setReferenceNumberMode(int value) {

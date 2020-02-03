@@ -36,6 +36,7 @@
     <string name="enable_tipping">Enable Tipping</string>
     <string name="multi_operator_mode">Multioperator mode</string>
     <string name="skip_confirmation_screen">Skip confirmation screen</string>
+    <string name="enable_mastercard_sonic">MasterCard Sonic branding</string>
     <string name="reference_number">Reference number</string>
     <string name="customer_receipt">Customer Receipt</string>
     <string name="merchant_receipt">Merchant receipt</string>

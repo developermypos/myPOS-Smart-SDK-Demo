@@ -10,9 +10,11 @@ public interface IPreferences extends Serializable {
 
     boolean getSkipConfirmationScreenflag();
 
+    boolean getMCSonicEnabled();
+
     int getReferenceNumberMode();
 
     int getCustomerReceiptMode();
 
-    int getMerchantReceiptMode() ;
+    int getMerchantReceiptMode();
 }

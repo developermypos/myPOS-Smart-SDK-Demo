@@ -53,6 +53,11 @@ public class Utils {
             }
 
             @Override
+            public boolean getMCSonicEnabled() {
+                return true;
+            }
+
+            @Override
             public int getReferenceNumberMode() {
                 return ReferenceType.OFF;
             }

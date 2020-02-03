@@ -44,6 +44,7 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
         paymentBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
         paymentBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
         paymentBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
+        paymentBuilder.mastercardSonicBranding(preferences.getMCSonicEnabled());
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
