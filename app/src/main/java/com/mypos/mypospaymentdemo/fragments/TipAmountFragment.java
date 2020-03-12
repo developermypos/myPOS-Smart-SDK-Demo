@@ -56,7 +56,7 @@ public class TipAmountFragment extends Fragment {
         title.setText(R.string.tip_amount);
         currency.setText(TerminalData.posinfo.getCurrencyName());
 
-        boolean isDecimalAllowed = !Currency.ISK.name().equalsIgnoreCase(TerminalData.posinfo.getCurrencyName())             ;
+        boolean isDecimalAllowed = !Currency.ISK.name().equalsIgnoreCase(TerminalData.posinfo.getCurrencyName()) && !Currency.HUF.name().equalsIgnoreCase(TerminalData.posinfo.getCurrencyName());
 
         String lastAmount = isDecimalAllowed ? "0.00" : "0";
         if (keyboardHandler != null)
