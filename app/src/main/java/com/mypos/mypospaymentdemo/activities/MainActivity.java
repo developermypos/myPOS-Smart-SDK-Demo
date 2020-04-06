@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Register the printer result broadcast receivers
         registerReceiver(printerBroadcastReceiver, new IntentFilter(MyPOSUtil.PRINTING_DONE_BROADCAST));
-        registerReceiver(scannerBroadcastReceiver, new IntentFilter(MyPOSUtil.SCANNER_RESULT_BROADCAST));
+        // HARDCODED out since SCANNER_RESULT_BROADCAST is not defined in the Maven version of the SDK
+        registerReceiver(scannerBroadcastReceiver, new IntentFilter("com.mypos.action.SCANNER_RESULT"));
 
         setContentView(R.layout.activity_main);
 
@@ -195,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
                 startGiftCards();
                 break;
             case R.id.scanner_btn:
-                sendBroadcast(new Intent(MyPOSUtil.SCANNER_BROADCAST));
+                // HARDCODED since SCANNER_BROADCAST is not defined in the Maven version of the SDK
+                sendBroadcast(new Intent("com.mypos.action.OPEN_SCANNER"));
                 break;
         }
     }
