@@ -58,6 +58,11 @@ public class Utils {
             }
 
             @Override
+            public boolean getVisaSensoryEnabled() {
+                return true;
+            }
+
+            @Override
             public int getReferenceNumberMode() {
                 return ReferenceType.OFF;
             }

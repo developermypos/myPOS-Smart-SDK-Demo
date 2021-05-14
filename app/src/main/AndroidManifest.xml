@@ -3,6 +3,7 @@
     package="com.mypos.mypospaymentdemo">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.mypos.permissions.READ_PROVIDERS"/>
 
     <application
         android:name=".PosApplication"

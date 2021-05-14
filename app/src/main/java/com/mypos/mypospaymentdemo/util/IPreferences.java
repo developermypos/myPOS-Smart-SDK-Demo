@@ -12,6 +12,8 @@ public interface IPreferences extends Serializable {
 
     boolean getMCSonicEnabled();
 
+    boolean getVisaSensoryEnabled();
+
     int getReferenceNumberMode();
 
     int getCustomerReceiptMode();

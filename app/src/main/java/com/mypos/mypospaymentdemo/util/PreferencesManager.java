@@ -65,6 +65,17 @@ public class PreferencesManager {
         return sharedPreferences.getBoolean("mc_sonic_enabled", true);
     }
 
+
+    public void setVisaSensoryEnabled(boolean value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("visa_sensory_enabled", value);
+        editor.apply();
+    }
+
+    public boolean getVisaSensoryEnabled() {
+        return sharedPreferences.getBoolean("visa_sensory_enabled", true);
+    }
+
     public void setReferenceNumberMode(int value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("reference_number_mode", value);
@@ -132,6 +143,7 @@ public class PreferencesManager {
         preferences.setMultiOperatorModeEnabled(getMultiOperatorModeEnabled());
         preferences.setSkipConfirmationScreenflag(getSkipConfirmationScreenflag());
         preferences.setMCSonicEnabled(getMCSonicEnabled());
+        preferences.setVisaSensoryEnabled(getVisaSensoryEnabled());
         preferences.setReferenceNumberMode(getReferenceNumberMode());
         preferences.setCustomerReceiptMode(getCustomerReceiptMode());
         preferences.setMerchantReceiptMode(getMerchantReceiptMode());
@@ -145,6 +157,7 @@ public class PreferencesManager {
         private boolean multiOperatorModeEnabled;
         private boolean skipConfirmationScreenFlag;
         private boolean mcSonicEnabled;
+        private boolean mSensoryEnabled;
         private int referenceNumberMode;
         private int customerReceiptMode;
         private int merchantReceiptMode;
@@ -183,6 +196,15 @@ public class PreferencesManager {
         @Override
         public boolean getMCSonicEnabled() {
             return mcSonicEnabled;
+        }
+
+        public void setVisaSensoryEnabled(boolean value) {
+            mSensoryEnabled = value;
+        }
+
+        @Override
+        public boolean getVisaSensoryEnabled() {
+            return mSensoryEnabled;
         }
 
         public void setReferenceNumberMode(int value) {

@@ -24,15 +24,17 @@ android {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile project(path: ':mypossmartsdk')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:gridlayout-v7:23.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
-    testCompile 'junit:junit:4.12'
+    implementation project(path: ':mypossmartsdk')
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:gridlayout-v7:23.1.1'
+
+    testImplementation 'junit:junit:4.12'
 }
