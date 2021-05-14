@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 startGiftCards();
                 break;
             case R.id.scanner_btn:
-                sendBroadcast(new Intent(MyPOSUtil.SCANNER_BROADCAST));
+                MyPOSAPI.sendExplicitBroadcast(this, new Intent(MyPOSUtil.SCANNER_BROADCAST));
                 break;
         }
     }
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MyPOSUtil.PRINT_LAST_RECEIPT_BROADCAST);
         // Whether or not a copy for the customer should be printed
         intent.putExtra("print_customer_receipt", true);
-        sendBroadcast(intent);
+        MyPOSAPI.sendExplicitBroadcast(this, intent);
     }
 
     private void testPrint() {
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("bottom_space", false);
 
         // Send broadcast
-        sendBroadcast(intent);
+        MyPOSAPI.sendExplicitBroadcast(this, intent);
     }
 
     private void startSettings() {
