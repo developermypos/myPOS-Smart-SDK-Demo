@@ -45,6 +45,8 @@
     <string name="automatically">Automatically</string>
     <string name="disabled">Disabled</string>
     <string name="after_confirmation">After confirmation</string>
+    <string name="e_receipt">E-Receipt</string>
+    <string name="hex_color">#hex color</string>
 
     <string name="off">Off</string>
     <string name="invoice_number">Invoice number</string>

@@ -2,13 +2,16 @@ package com.mypos.mypospaymentdemo.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mypos.mypospaymentdemo.R;
 import com.mypos.mypospaymentdemo.util.PreferencesManager;
@@ -18,6 +21,8 @@ import com.mypos.smartsdk.ReferenceType;
 public class SettingsActivity extends AppCompatActivity {
 
     private TextView referenceNumberTypeTV;
+    private EditText eReceiptReceiverTextview;
+    private EditText appColorTextview;
 
     private PreferencesManager preferencesManager;
 
@@ -36,6 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
         referenceNumberTypeTV = (TextView) findViewById(R.id.reference_number_text);
         RadioGroup customerReceiptTypes = (RadioGroup) findViewById(R.id.customer_receipt_types);
         RadioGroup merchantReceiptTypes = (RadioGroup) findViewById(R.id.merchant_receipt_types);
+        eReceiptReceiverTextview = (EditText) findViewById(R.id.e_receipt_textview);
+        appColorTextview = (EditText) findViewById(R.id.color_textview);
 
         tippingToggle.setChecked(preferencesManager.getTipEnabled());
         multiOperatorToggle.setChecked(preferencesManager.getMultiOperatorModeEnabled());
@@ -45,6 +52,9 @@ public class SettingsActivity extends AppCompatActivity {
         referenceNumberTypeTV.setText(getReferenceNumberTxt(preferencesManager.getReferenceNumberMode()));
         customerReceiptTypes.check(customerReceiptTypeToId(preferencesManager.getCustomerReceiptMode()));
         merchantReceiptTypes.check(merchantReceiptTypeToId(preferencesManager.getMerchantReceiptMode()));
+        merchantReceiptTypes.check(merchantReceiptTypeToId(preferencesManager.getMerchantReceiptMode()));
+        eReceiptReceiverTextview.setText(preferencesManager.getEReceiptReceiver());
+        appColorTextview.setText(preferencesManager.getAppColor());
 
         tippingToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -171,6 +181,8 @@ public class SettingsActivity extends AppCompatActivity {
                 return R.id.cust_disabled_radio;
             case MyPOSUtil.RECEIPT_AFTER_CONFIRMATION:
                 return R.id.cust_after_conf_radio;
+            case MyPOSUtil.RECEIPT_E_RECEIPT:
+                return R.id.cust_e_receipt_radio;
         }
 
         return R.id.cust_auto_radio;
@@ -184,6 +196,8 @@ public class SettingsActivity extends AppCompatActivity {
                 return MyPOSUtil.RECEIPT_OFF;
             case R.id.cust_after_conf_radio:
                 return MyPOSUtil.RECEIPT_AFTER_CONFIRMATION;
+            case R.id.cust_e_receipt_radio:
+                return MyPOSUtil.RECEIPT_E_RECEIPT;
         }
 
         return MyPOSUtil.RECEIPT_ON;
@@ -211,4 +225,31 @@ public class SettingsActivity extends AppCompatActivity {
         return MyPOSUtil.RECEIPT_ON;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        String receiptReceiver = eReceiptReceiverTextview.getText().toString();
+
+        if (receiptReceiver.isEmpty())
+            receiptReceiver = null;
+
+        preferencesManager.setEReceiptReceiver(receiptReceiver);
+
+        String appColor = appColorTextview.getText().toString();
+
+        if (appColor.isEmpty())
+            appColor = null;
+        else {
+            try {
+                Color.parseColor(appColor);
+                // color is a valid color
+            } catch (IllegalArgumentException iae) {
+                // This color string is not valid
+                appColor = null;
+                Toast.makeText(this, "unknown color", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        preferencesManager.setAppColor(appColor);
+    }
 }

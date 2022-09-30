@@ -3,6 +3,7 @@ package com.mypos.mypospaymentdemo.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +41,10 @@ public class RefundActivity extends AppCompatActivity implements IFragmentResult
         refundBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
         refundBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
         refundBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
+        refundBuilder.eReceiptReceiver(preferences.getEReceiptReceiver());
+        if (preferences.getAppColor() != null) {
+            refundBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
+        }
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);

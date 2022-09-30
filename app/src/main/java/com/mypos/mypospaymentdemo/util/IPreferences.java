@@ -19,4 +19,8 @@ public interface IPreferences extends Serializable {
     int getCustomerReceiptMode();
 
     int getMerchantReceiptMode();
+
+    String getEReceiptReceiver();
+
+    String getAppColor();
 }

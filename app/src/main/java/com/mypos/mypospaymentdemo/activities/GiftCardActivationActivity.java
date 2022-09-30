@@ -3,6 +3,7 @@ package com.mypos.mypospaymentdemo.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +41,9 @@ public class GiftCardActivationActivity extends AppCompatActivity implements IFr
         mBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
         mBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
         mBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
+        if (preferences.getAppColor() != null) {
+            mBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
+        }
 
         addFragment(new AmountFragment(Utils.AMOUNT_REQUEST_CODE, this));
     }

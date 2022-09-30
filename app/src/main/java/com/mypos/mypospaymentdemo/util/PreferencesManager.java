@@ -106,6 +106,26 @@ public class PreferencesManager {
         return sharedPreferences.getInt("merchant_receipt_mode", MyPOSUtil.RECEIPT_ON);
     }
 
+    public void setEReceiptReceiver(String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("receipt_receiver", value);
+        editor.apply();
+    }
+
+    public String getEReceiptReceiver() {
+        return sharedPreferences.getString("receipt_receiver", null);
+    }
+
+    public void setAppColor(String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("app_color", value);
+        editor.apply();
+    }
+
+    public String getAppColor() {
+        return sharedPreferences.getString("app_color", null);
+    }
+
     public void setLastTransactionStan(String value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("last_stan", value);
@@ -147,6 +167,8 @@ public class PreferencesManager {
         preferences.setReferenceNumberMode(getReferenceNumberMode());
         preferences.setCustomerReceiptMode(getCustomerReceiptMode());
         preferences.setMerchantReceiptMode(getMerchantReceiptMode());
+        preferences.setEReceiptReceiver(getEReceiptReceiver());
+        preferences.setAppColor(getAppColor());
 
         return preferences;
     }
@@ -161,6 +183,8 @@ public class PreferencesManager {
         private int referenceNumberMode;
         private int customerReceiptMode;
         private int merchantReceiptMode;
+        private String eReceiptReceiver;
+        private String appColor;
 
         public void setTipEnabled(boolean value) {
             tipEnabled = value;
@@ -232,6 +256,24 @@ public class PreferencesManager {
         @Override
         public int getMerchantReceiptMode() {
             return merchantReceiptMode;
+        }
+
+        public void setEReceiptReceiver(String value) {
+            eReceiptReceiver = value;
+        }
+
+        @Override
+        public String getEReceiptReceiver() {
+            return eReceiptReceiver;
+        }
+
+        public void setAppColor(String value) {
+            appColor = value;
+        }
+
+        @Override
+        public String getAppColor() {
+            return appColor;
         }
     }
 }

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.mypos.permissions.READ_PROVIDERS"/>
 
+<!--    <queries>
+        <package android:name="com.mypos" />
+    </queries>-->
+
     <application
         android:name=".PosApplication"
         android:allowBackup="true"
@@ -13,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" >
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

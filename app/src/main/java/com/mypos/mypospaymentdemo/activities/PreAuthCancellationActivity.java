@@ -3,6 +3,7 @@ package com.mypos.mypospaymentdemo.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +38,9 @@ public class PreAuthCancellationActivity extends AppCompatActivity implements IF
         preauthBuilder.foreignTransactionId(UUID.randomUUID().toString());
         preauthBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
         preauthBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
+        if (preferences.getAppColor() != null) {
+            preauthBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
+        }
 
         addFragment(new PreAuthCodeFragment(Utils.PREAUTH_CODE_REQUEST_CODE, this));
     }

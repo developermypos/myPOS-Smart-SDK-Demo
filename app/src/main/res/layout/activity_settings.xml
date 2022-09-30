@@ -243,6 +243,13 @@
                         android:text="@string/after_confirmation"
                         android:textColor="@color/main_blue" />
 
+                    <RadioButton
+                        android:id="@+id/cust_e_receipt_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/e_receipt"
+                        android:textColor="@color/main_blue" />
+
                 </RadioGroup>
 
             </LinearLayout>
@@ -292,6 +299,30 @@
                 </RadioGroup>
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+        <EditText
+            android:id="@+id/e_receipt_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/e_receipt"
+            android:padding="16dip"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+        <EditText
+            android:id="@+id/color_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hex_color"
+            android:padding="16dip"/>
 
             <View
                 android:layout_width="match_parent"

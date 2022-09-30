@@ -76,6 +76,16 @@ public class Utils {
             public int getMerchantReceiptMode() {
                 return MyPOSUtil.RECEIPT_ON;
             }
+
+            @Override
+            public String getEReceiptReceiver() {
+                return null;
+            }
+
+            @Override
+            public String getAppColor() {
+                return null;
+            }
         };
     }
 }

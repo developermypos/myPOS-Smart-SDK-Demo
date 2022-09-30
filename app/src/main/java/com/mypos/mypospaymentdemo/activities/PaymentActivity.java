@@ -3,6 +3,7 @@ package com.mypos.mypospaymentdemo.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +47,10 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
         paymentBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
         paymentBuilder.mastercardSonicBranding(preferences.getMCSonicEnabled());
         paymentBuilder.visaSensoryBranding(preferences.getVisaSensoryEnabled());
+        paymentBuilder.eReceiptReceiver(preferences.getEReceiptReceiver());
+        if (preferences.getAppColor() != null) {
+            paymentBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
+        }
 
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
