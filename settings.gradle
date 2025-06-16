@@ -1,2 +1,1 @@
-include ':app', ':mypossmartsdk'
-project(':mypossmartsdk').projectDir = new File('smartsdk/mypossmartsdk')
+include ':app'

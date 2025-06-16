@@ -24,6 +24,7 @@
     <string name="regular_transaction">Regular Transaction</string>
     <string name="moto_transaction">MO/TO Transaction</string>
     <string name="giftcard_transaction">GiftCard Transaction</string>
+    <string name="twint_transaction">Twint Transaction</string>
 
     <string name="giftcard_activation">GiftCard Activation</string>
     <string name="giftcard_deactivation">GiftCard Deactivation</string>

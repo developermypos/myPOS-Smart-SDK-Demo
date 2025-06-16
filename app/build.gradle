@@ -19,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.mypos.mypospaymentdemo'
 }
 
 
@@ -31,7 +32,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation project(path: ':mypossmartsdk')
+    implementation 'com.mypos:mypossmartsdk:1.0.6'
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support:gridlayout-v7:23.1.1'
 

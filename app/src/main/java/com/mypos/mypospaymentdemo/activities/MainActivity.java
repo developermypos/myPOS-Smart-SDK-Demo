@@ -270,11 +270,14 @@ public class MainActivity extends AppCompatActivity {
                    case IOptionsSelected.POSITION_THIRD:
                        i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_GIFTCARD);
                        break;
+                   case IOptionsSelected.POSITION_FOURTH:
+                       i.putExtra("tran_spec", Utils.TRANSACTION_SPEC_TWINT);
+                       break;
                }
                i.putExtra("preferences", PreferencesManager.getInstance().getPreferences());
                startActivityForResult(i, Utils.PAYMENT_ACTIVITY_REQUEST_CODE);
             }
-        }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction)});
+        }, new CharSequence[] {getString(R.string.regular_transaction), getString(R.string.moto_transaction), getString(R.string.giftcard_transaction), getString(R.string.twint_transaction)});
     }
 
     /**
@@ -494,6 +497,7 @@ public class MainActivity extends AppCompatActivity {
         int POSITION_FIRST = 0;
         int POSITION_SECOND = 1;
         int POSITION_THIRD = 2;
+        int POSITION_FOURTH = 3;
 
         void onReady(int position);
     }

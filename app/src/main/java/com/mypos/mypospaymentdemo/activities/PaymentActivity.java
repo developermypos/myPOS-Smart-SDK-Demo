@@ -21,6 +21,7 @@ import com.mypos.mypospaymentdemo.util.Utils;
 import com.mypos.smartsdk.Currency;
 import com.mypos.smartsdk.MyPOSAPI;
 import com.mypos.smartsdk.MyPOSPayment;
+import com.mypos.smartsdk.MyPOSUtil;
 import com.mypos.smartsdk.ReferenceType;
 
 import java.util.UUID;
@@ -29,6 +30,8 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
 
     MyPOSPayment.Builder paymentBuilder;
     private IPreferences preferences;
+
+    boolean isTwint = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +43,34 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
         if (preferences == null)
             preferences = Utils.getDefaultPreferences();
 
-        paymentBuilder = MyPOSPayment.builder();
-        paymentBuilder.foreignTransactionId(UUID.randomUUID().toString());
-        paymentBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
-        paymentBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
-        paymentBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
-        paymentBuilder.mastercardSonicBranding(preferences.getMCSonicEnabled());
-        paymentBuilder.visaSensoryBranding(preferences.getVisaSensoryEnabled());
-        paymentBuilder.eReceiptReceiver(preferences.getEReceiptReceiver());
-        if (preferences.getAppColor() != null) {
-            paymentBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
-        }
-
         if (getIntent().hasExtra("tran_spec")) {
             int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
-            if (transpec == Utils.TRANSACTION_SPEC_MOTO)
-                paymentBuilder.motoTransaction(true);
-            else if (transpec == Utils.TRANSACTION_SPEC_GIFTCARD)
-                paymentBuilder.giftCardTransaction(true);
+
+            if (transpec == Utils.TRANSACTION_SPEC_TWINT) {
+                isTwint = true;
+            }
+        }
+
+        if (!isTwint) {
+            paymentBuilder = MyPOSPayment.builder();
+            paymentBuilder.foreignTransactionId(UUID.randomUUID().toString());
+            paymentBuilder.currency(Currency.valueOf(TerminalData.posinfo.getCurrencyName()));
+            paymentBuilder.printCustomerReceipt(preferences.getCustomerReceiptMode());
+            paymentBuilder.printMerchantReceipt(preferences.getMerchantReceiptMode());
+            paymentBuilder.mastercardSonicBranding(preferences.getMCSonicEnabled());
+            paymentBuilder.visaSensoryBranding(preferences.getVisaSensoryEnabled());
+            paymentBuilder.eReceiptReceiver(preferences.getEReceiptReceiver());
+            if (preferences.getAppColor() != null) {
+                paymentBuilder.baseColor(Color.parseColor(preferences.getAppColor()));
+            }
+
+            if (getIntent().hasExtra("tran_spec")) {
+                int transpec = getIntent().getIntExtra("tran_spec", Utils.TRANSACTION_SPEC_REGULAR);
+                if (transpec == Utils.TRANSACTION_SPEC_MOTO)
+                    paymentBuilder.motoTransaction(true);
+                else if (transpec == Utils.TRANSACTION_SPEC_GIFTCARD)
+                    paymentBuilder.giftCardTransaction(true);
+            }
         }
 
         addFragment(new AmountFragment(Utils.AMOUNT_REQUEST_CODE, this));
@@ -73,7 +86,7 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Utils.PAYMENT_REQUEST_CODE) {
+        if (requestCode == Utils.PAYMENT_REQUEST_CODE || requestCode == MyPOSUtil.TRANSACTION_TYPE_TWINT_PAYMENT) {
             setResult(resultCode, data);
             finish();
         }
@@ -131,7 +144,10 @@ public class PaymentActivity extends AppCompatActivity implements IFragmentResul
     @Override
     public void setResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            gotoNextStep(requestCode, data);
+            if (isTwint) {
+                MyPOSAPI.openTwintPaymentActivity(this, data.getDoubleExtra("product_amount", 0.0D), Currency.valueOf(TerminalData.posinfo.getCurrencyName()), null, preferences.getSkipConfirmationScreenflag(), MyPOSUtil.TRANSACTION_TYPE_TWINT_PAYMENT);
+            } else
+                gotoNextStep(requestCode, data);
         }
         else {
             setResult(RESULT_CANCELED);

@@ -34,6 +34,7 @@ public class Utils {
     public static final int TRANSACTION_SPEC_REGULAR = 0;
     public static final int TRANSACTION_SPEC_MOTO = 1;
     public static final int TRANSACTION_SPEC_GIFTCARD = 2;
+    public static final int TRANSACTION_SPEC_TWINT = 3;
 
     public static IPreferences getDefaultPreferences() {
         return new IPreferences() {
